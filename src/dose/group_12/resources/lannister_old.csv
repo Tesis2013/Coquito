@@ -1,0 +1,54 @@
+ID;Title;Type;House;Cost;STR (Char);Military (Char);Intrigue (Char);Power (Char);Crests (Char);Initiative (Plot);Claim (Plot);Influence;Gold Modifier;Traits;Keywords;Text;TextEffectMethodID
+0;House Lannister;House;Lannister;;;;;;;;;;;;;;-1
+1;Gutter Rat's Cunning;Attachment;Lannister;1;;;;;;;;;;Skill.;;Attached character gets +2 STR and gains stealth.;-1
+2;Gilded Plate;Attachment;Lannister;0;;;;;;;;;;Armor.;;Response: Pay 1 gold and discard Gilded Plate from play (cannot be saved) to save attached character from being killed or discarded.;-1
+3;Joffrey Baratheon;Character;Lannister;3;2;;;1;Noble;;;;;Lord.;;Response: After a Lord or Lady character is killed, Joffrey Baratheon claims 1 power. (Limit 3 times per round.);-1
+4;Ser Jaime Lannister;Character;Lannister;4;3;1;1;;;;;;;Lord. Knight.;Deadly. Infamy.;Ser Jaime Lannister does not kneel to attack or defend during a military challenge.;-1
+5;Tyrion Lannister;Character;Lannister;4;3;;1;1;Learned;;;;;Lord.;Stealth.;Response: After you win an intrigue challenge or a challenge in which Tyrion Lannister participated, pay 1 gold to draw a card.;-1
+6;Cersei Lannister;Character;Lannister;3;3;;1;1;Noble;;;;;Lady.;;Dominance: Kneel Cersei Lannister and pay 2 gold to choose a character. Kneel that character if it is standing. That character does not stand during the standing phase this round.;-1
+7;Tywin Lannister;Character;Lannister;5;4;1;1;1;Noble;;;;;Lord.;;At the beginning of the marshalling phase, take 2 gold from the treasury and place it on Tywin Lannister. You may spend gold tokens on Tywin Lannister as if they are in your gold pool.;-1
+8;Ser Ilyn Payne;Character;Lannister;4;2;;1;1;;;;;;Knight. Ally.;;Marshalling: Kneel Ser Ilyn Payne to choose and kill a character with STR 2 or lower.;-1
+9;The Hound;Character;Lannister;2;4;1;;;;;;;;Ally.;;If The Hound is killed, place him in your discard pile instead of your dead pile. At the beginning of the dominance phase, discard the top card from your deck or discard the Hound from play (cannot be saved).;-1
+10;Chella, Daughter of Cheyk;Character;Lannister;3;3;1;;;;;;;;Clansman.;Stealth.;Response: After you win a challenge in which at least 1 Clansman character participated, pay X gold to choose and return a location to its owner's hand, where X is the printed gold cost of that location.;-1
+11;Bronn;Character;Lannister;3;3;1;;1;;;;;;Knight. Mercenary.;No attachments. Deadly;Any Phase: Pay 2 gold to choose a character. Until the end of the phase, if that character would be killed and Bronn is kneeling, stand Bronn instead of killing that character.;-1
+12;Grand Maester Pycelle;Character;Lannister;3;2;;1;1;;;;;;Maester.;;Response: After an opponent's effect reveals one or more cards, reveal the top card of your deck and put it into your hand (limit 3 per phase).;-1
+13;Raff the Sweetling;Character;Lannister;2;2;1;1;;;;;;;Ally.;;Any Phase: Pay 1 gold to look at the top card of an opponent's deck. Then put that card either on the top or bottom of his or her deck.;-1
+14;Ser Jacelyn Bywater;Character;Lannister;3;3;1;;1;;;;;;Knight.;;Immune to character abilities. Response: After Ser Jacelyn Bywater is killed, each opponent must choose and discard a card at random from his or her hand, if able.;-1
+15;Enemy Informer;Character;Lannister;3;2;1;1;;;;;;;House Tyrell.;;Response: After you play Enemy Informer from your hand, choose and kneel a character.;-1
+16;Qyburn's Informers;Character;Lannister;4;2;;1;;;;;;;Ally.;Stealth.;Response: After you win an intrigue challenge in which Qyburn's Informers participated, draw 2 cards.;L49
+17;Cersei's Attendant;Character;Lannister;1;1;;1;;;;;;;Ally.;;Response: After Cersei Lannister or Cersei's Attendant is killed, choose and kneel a character.;-1
+18;Lurkers at Harrenhal;Character;Lannister;6;6;;1;1;;;;;;House Clegane.;No attachments. Stealth. Deadly.;;-1
+19;Lannisport Steward;Character;Lannister;2;2;;1;;;;;;2;Ally.;;;-1
+20;Lannisport Weaponsmith;Character;Lannister;1;1;1;;;;;;;1;Ally.;;;-1
+21;Lannisport Honor Guard;Character;Lannister;4;4;1;1;;;;;;;Army.;House Lannister only. No attachments.;Challenges: You may put Lannisport Honor Guard into play from your hand, under the control of any opponent. After that opponent wins a challenge in which Lannisport Honor Guard participated, take control of Lannisport Honor Guard.;-1
+22;Lannisport;Location;Lannister;2;;;;;;;;;;Lannisport.;;Response: After you win an intrigue challenge, pay 1 gold to claim 1 power for your House (limit once per challenge).;-1
+23;Lannisport Brothel;Location;Lannister;2;;;;;;;;;;King's Landing.;;Response: After a knelt character stands during the standing phase, kneel Lannisport Brothel to kneel that character.;-1
+24;Golden Tooth Mines;Location;Lannister;2;;;;;;;;;;Westeros.;;Each time you reveal a plot card, draw a card.;L57
+25;Western Fiefdoms;Location;Lannister;1;;;;;;;;1;;Lannisport.;Limited.;Marshalling: Kneel Western Fiefdoms to lower the cost of the next Lannister card you play this phase by 1.;-1
+26;Western Fiefdoms;Location;Lannister;1;;;;;;;;1;;Lannisport.;Limited.;Marshalling: Kneel Western Fiefdoms to lower the cost of the next Lannister card you play this phase by 1.;-1
+27;Queen Cersei's Chambers;Location;Lannister;1;;;;;;;;1;1;King's Landing.;;You may choose to play Queen Cersei's Chambers as an attachment to your House card.;-1
+28;The Goldroad;Location;Lannister;0;;;;;;;;;1;Westeros.;Limited.;;-1
+29;The Goldroad;Location;Lannister;0;;;;;;;;;1;Westeros.;Limited.;;-1
+30;The Goldroad;Location;Lannister;0;;;;;;;;;1;Westeros.;Limited.;;-1
+31;Hall of Heroes;Location;Lannister;2;;;;;;;;;;Lannisport.;Limited.;Marshalling: Kneel to lower the cost of the next Lannister character you play this phase by 2.;L64
+32;Sunset Sea;Location;Lannister;0;;;;;;;;1;;Westeros.;;Marshalling: Discard Narrow Sea from play to reduce the cost of the next Lannister or Greyjoy character you play this phase by 2.;L65
+33;Lordship;Attachment;Neutral;1;;;;;;;;;;;;Attached character gains the Lord trait and a power icon. During the dominance phase, attached character gets +4 STR. Limit 1 per character.;-1
+34;Littlefinger;Character;Neutral;5;3;;1;1;Learned;;;;;Lord. Ally.;Stealth.;Littlefinger gets +1 STR for each gold token in your gold pool.;-1
+35;Varys;Character;Neutral;3;3;;1;1;Learned;;;;;Lord. Ally.;Stealth.;Plot: If you have more than one opponent, kneel Varys to choose an opponent. Until the end of the round, switch plot decks and used plot piles with that opponent.;-1
+36;Crossroads;Location;Neutral;2;;;;;;;;1;1;Westeros.;;;-1
+37;Shadowblack Lane;Location;Neutral;0;;;;;;;;;;Westeros.;;Limit 1 per deck. Marshalling: Kneel Shadowblack Lane to lower the cost of the next character with an intrigue icon you play this phase by 1.;-1
+38;I Never Bet Against My Family;Event;Lannister;0;;;;;;;;;;;;Challenges: Pay X gold and kneel a Lannister character to lower an opponent's claim by X (to a minimum of 0) for the duration of the challenge.;-1
+39;The Lion's Will;Event;Lannister;0;;;;;;;;;;;House Lannister only.;Any Phase: Pay 2 gold to choose a character. Kneel that character.;L162
+40;Insidious Ways;Event;Lannister;0;;;;;;;;;;;;Challenges: Choose an attacking Lannister character. Until the end of the phase, that character gets +2 STR. If you win the challenge, draw 2 cards.;-1
+41;Call Their Bluff;Event;Lannister;0;;;;;;;;;;;House Lannister only.;Dominance: Pay 2 gold to name a card. Each opponent then reveals his or her hand and discards all cards with that name.;-1
+42;I'm You Writ Small;Event;Lannister;0;;;;;;;;;;;House Lannister only.;Challenges: Choose a character. Until the end of the phase, that character gains deadly. Then, attach I'm You Writ Small to a Lannister character (counts as a Boon attachment with the text Attached character gets +2 STR).;-1
+43;A Lannister Pays His Debts;Event;Lannister;0;;;;;;;;;;;;Response: After you lose a challenge, kneel one of your Lannister characters to choose and kill a participating character controlled by the winning opponent.;-1
+44;You've Killed the Wrong Dwarf!;Event;Lannister;0;;;;;;;;;;;House Lannister only.;Any phase: Choose and kneel a non-Noble character. Then, that character claims 1 power.;-1
+45;Shae;Character;Neutral;2;1;;1;;;;;;;Ally.;;Marshalling: kneel to choose and kneel a character controlled by a player with more power than you.;-1
+46;Mutual Blackmail;Plot;Neutral;3;;;;;;1;2;;;;;When revealed, if you have more than one opponent, choose an opponent. You and that opponent cannot declare intrigue challenges against one another this round.;-1
+47;Planning Ahead;Plot;Neutral;3;;;;;;0;1;;;;;Skip the taxation phase this round.;-1
+48;Wildfire Assault;Plot;Neutral;3;;;;;;4;1;;;;;When revealed, each player chooses up to 3 of his or her characters. All characters not chosen are killed (cannot be saved).;-1
+49;Hear Me Roar;Plot;Lannister;5;;;;;;3;1;;;;House Lannister only.;Characters without an intrigue icon get -1 STR.;-1
+50;Blockade;Plot;Neutral;0;;;;;;4;1;;;;;The income on each opponent's revealed plot card is reduced to 0.;-1
+51;The Power of Blood;Plot;Neutral;4;;;;;;3;1;;;;;You may have up to 2 copies of The Power of Blood in your plot deck. Noble characters cannot be killed.;-1
+52;Drunken Allegations;Plot;Neutral;3;;;;;;4;1;;;;;When revealed, choose an opponent. Then, you and that opponent must each chooce and kneel a standing character.;-1

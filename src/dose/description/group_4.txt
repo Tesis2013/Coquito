@@ -1,0 +1,8 @@
+Mag Blast
+
+------------------------------
+
+Created by group: Group 4
+Teams: ITU4, RioCuarto4, ITU13
+
+A card-based game where the aim of the game is to build up interstellar war fleets and destroy your opponents' command ships. Manage your resources and use your race's abilities to your advantage to blast your opponents into space dust. Don't forget to make a sound effect when you attack!

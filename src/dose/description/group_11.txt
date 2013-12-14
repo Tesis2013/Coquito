@@ -1,0 +1,15 @@
+Hive
+-----
+
+Created by group: 11
+Teams: PUCRS7, ITU12, NN2, Cairo1
+
+Hive is a strategic game for two players in which the aim is to surrounded the Queen Bee of the opponent. There are 22 pieces in total making up a Hive set, with 11 pieces per player, each representing an insect and a different means of moving.
+
+1 Queen Bee (Yellow-Gold) - The Queen Bee can move only one space per turn.
+2 Spiders (Brown) - The Spider moves three spaces per turn, no more, no less. It must move in a direct path and cannot backtrack on itself. It may only move around pieces that it is in direct contact with on each step of its move.
+2 Beetles (Purple) - Like the Queen Bee, moves only one space per turn. Unlike any other creature though, it can also move on top of the Hive.
+3 Grasshoppers (Green) - Does not move around the outside of the Hive like the other creatures. Instead, it jumps from its space over any number of pieces (but at least one) to the next unoccupied space along a straight row of joined pieces.
+3 Soldier Ants (Blue) - The Soldier Ant can move from its position to any other position around the Hive. This freedom of movement makes the Ant one of the most valuable pieces.
+
+The game ends when a Queen Bee is captured by surrounding it on all 6 sides by either player's pieces. The game is a draw if a move results in the simultaneous surrounding of both Queen Bees, or in a situation where each player's best move for a turn leads to an endless cyclical repetition of a series of moves (this situation is known as stalemate).

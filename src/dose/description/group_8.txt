@@ -1,0 +1,12 @@
+Race for the Galaxy
+------
+
+Created by group 8
+
+ITU8 (logic & network)
+Zurich3 (GUI)
+Cairo2 (AI)
+PUCRS4 (SRS)
+
+In this version of the game called Race for the Galaxy, players build galactic civilisations by playing game cards in front of them that represent worlds or developments. Some worlds allow players to produce goods, which can be consumed later to gain victory points. 
+At the beginning of each round, players each select, secretly and simultaneously, one of the five phases in which the round progresses. By selecting a phase, each players is given the opportunity to perform that phase's action. For example, if one player chooses the settle role, each player has the opportunity to settle one of the planets from their hand. The player who has chosen the role, however, gets a bonus that applies only to him. One must be aware when another player also takes advantage of his choice of role. 

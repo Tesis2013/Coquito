@@ -1,0 +1,8 @@
+Monopoly
+Monopoly is an American-originated board game originally published by Parker Brothers. Subtitled "The Fast-Dealing Property Trading Game," the game is named after the economic concept of monopoly - the domination of a market by a single entity. It is produced by the United States game and toy company Hasbro. Players move around the game board buying or trading properties, developing their properties with houses and hotels, and collecting rent from their opponents, the ultimate goal being to drive them into bankruptcy. (Wikipedia)
+
+by:
+PUCRS2 - MRR (requirements)
+ITU6 (AI and network)
+Zurich2 - Gang of Three (user interface)
+NN1 (rules and logic)

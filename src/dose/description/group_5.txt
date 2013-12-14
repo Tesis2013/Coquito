@@ -1,0 +1,11 @@
+Scrabble
+
+---------------------------------
+
+Created by group: 5 <se-dose-group5@lists.inf.ethz.ch>
+Teams: PUCRS1, ITU5, Milano3, Madrid2 
+
+The word game Scrabble is a game where players use letter-tiles in order to form words on the gameboard. It is a multiplayer game will support 2-4 players playing against each other. Each user in him/her move needs to try to create word(s) in the board using the letter available in the "rack". Each player will have his/her own rack that will not showed to the other player. Each rack will contain 7 letters randomly choose by the system. In each move the player can use these letters to create the word.
+Each word laid out earns points based on the commonality of the letters used, with certain board spaces giving bonuses. But a word can only be played if it uses at least one already-played tile or adds to an already-played word. This leads to slightly tactical play, as potential words are rejected because they would give an opponent too much access to the better bonus spaces.
+The game ends when all the tiles run out. The player that get more points win the game.
+The online version of the game Scrabble is intended to be part of an game portal, making to users the opportunity to play it on the web.

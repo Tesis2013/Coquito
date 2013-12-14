@@ -1,0 +1,8 @@
+Citadels
+
+---------------------------------
+
+Created by group: 2
+Teams: ITU2, Milano2, Zurich1, Adelaide2 
+
+Citadels is a turn-based strategy game for seven players. One to seven of these players may be human, with the remainder being played by computer AI. The object of the game is to be the player with the highest score (as measured by the value of districts built) at the conclusion of the game. Players hold gold, district cards representing districts that they have built, district cards representing districts they may build, and a character card which changes at the start of each round.

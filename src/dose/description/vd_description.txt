@@ -1,0 +1,8 @@
+Vision Demo
+-------------
+
+Created by group: Instructors
+
+This is a small demo to show how Eiffel Vision's 'Model World' can be used to implement games. The Tic-Tac-Toe example relies on using containers as the basic elements to structure the UI. In comparison, the model world is more like drawing on a canvas. In previous years, students reported that they prefer this approach to containers. But it is up to you to choose your preferred way of implementing your game.s
+
+What does the application do: you can drag, move and drop the stones. Their position will be displayed in a separate window.
