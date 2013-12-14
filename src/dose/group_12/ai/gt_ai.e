@@ -166,7 +166,7 @@ feature -- Deferred methods
 
 	change_initial_card: BOOLEAN
 		require
-			cards_in_hand: ai_player.get_cards_in_hand.size > 0
+			-- cards_in_hand: ai_player.get_cards_in_hand.size > 0
 			appropriate_phase: attached {GT_LOGIC_PHASE_SETUP} ai_board.get_current_phase
 			-- Not have changed the cards before
 		deferred
@@ -210,7 +210,7 @@ feature -- Deferred methods
 	choose_initial_cards
 			-- Choose initial cards to put in play
 		require
-			count_dragon_gold: ai_player.gold_dragon_tokens = 5
+		--	count_dragon_gold: ai_player.gold_dragon_tokens = 5
 			appropriate_phase: attached {GT_LOGIC_PHASE_SETUP} ai_board.get_current_phase
 		deferred
 		end
@@ -229,7 +229,7 @@ feature -- Deferred methods
 			appropriate_phase: attached {GT_LOGIC_PHASE_CHALLENGES} ai_board.get_current_phase
 		deferred
 		ensure
-			correct_challenge: Result = {GT_CONSTANTS}.challenge_type_intrigue or Result = {GT_CONSTANTS}.challenge_type_military or Result = {GT_CONSTANTS}.challenge_type_power
+		--	correct_challenge: Result = {GT_CONSTANTS}.challenge_type_intrigue or Result = {GT_CONSTANTS}.challenge_type_military or Result = {GT_CONSTANTS}.challenge_type_power
 		end
 
 	choose_cards_to_kill
