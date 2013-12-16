@@ -36,14 +36,6 @@ inherit
 			get_current_phase as handler_get_current_phase
 		end
 
---	GT_LOGIC_PLAYER
---		rename
---			default_create as gt_default_create_player,
---			make as make_player
---	end
-
-
-
 feature {NONE}
 	player_ai : GT_LOGIC_PLAYER
 	player_human : GT_LOGIC_PLAYER
@@ -193,10 +185,29 @@ feature
 		testing: "covers/{GT_AI}.make_move"
 		testing: "GT/GT_AI"
 		testing: "user/GT"
+	local
+		phase: STRING
+		correct_phase: BOOLEAN
 	do
 		-- Set up the initial state of the board
 		-- TODO
-		handler_current_phase := phase_setup
+		from
+			correct_phase := False
+		until
+			correct_phase
+		loop
+			phase := get_current_phase.get_phase_identifer
+			if phase = {GT_CONSTANTS}.phase_plot then
+				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+			end
+			if phase /= {GT_CONSTANTS}.phase_marshalling then
+				player_human.end_turn
+				player_ai.end_turn
+			else
+				correct_phase := True
+			end
+		end
 
 		-- Make a move
 		make_move
@@ -211,29 +222,30 @@ feature
 		testing: "covers/{GT_AI}.make_move"
 		testing: "GT/GT_AI"
 		testing: "user/GT"
+	local
+		phase: STRING
+		correct_phase: BOOLEAN
 	do
 		-- Set up the initial state of the board
 		-- TODO
-		handler_current_phase := phase_plot
 
-		-- Make a move
-		make_move
-
-
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
-	end
-
-	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the draw phase)
-	test_make_move_draw_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		handler_current_phase := phase_draw
+		from
+			correct_phase := False
+		until
+			correct_phase
+		loop
+			phase := get_current_phase.get_phase_identifer
+			if phase = {GT_CONSTANTS}.phase_plot then
+				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+			end
+			if phase /= {GT_CONSTANTS}.phase_marshalling then
+				player_human.end_turn
+				player_ai.end_turn
+			else
+				correct_phase := True
+			end
+		end
 
 		-- Make a move
 		make_move
@@ -249,16 +261,33 @@ feature
 		testing: "covers/{GT_AI}.make_move"
 		testing: "GT/GT_AI"
 		testing: "user/GT"
+	local
+		correct_phase: BOOLEAN
+		phase: STRING
 	do
 		-- Set up the initial state of the board
 		-- TODO
-		handler_current_phase := phase_marshalling
-
+		-- I move until the phase of marshalling
+		from
+			correct_phase := False
+		until
+			correct_phase
+		loop
+			phase := get_current_phase.get_phase_identifer
+			if phase = {GT_CONSTANTS}.phase_plot then
+				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+			end
+			if phase /= {GT_CONSTANTS}.phase_marshalling then
+				player_human.end_turn
+				player_ai.end_turn
+			else
+				correct_phase := True
+			end
+		end
 
 		-- Make a move
 		make_move
-
-
 
 		-- assert that the move has been made (ie. the AI player is ready for next phase)
 		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
@@ -301,66 +330,5 @@ feature
 
 		-- assert that the move has been made (ie. the AI player is ready for next phase)
 		assert("The AI was not ready for the next phase", player_ai.is_player_ready_for_next_phase)
-	end
-
-
-
-
-	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the dominance phase)
-	test_make_move_dominance_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		handler_current_phase := phase_dominance
-
-		-- Make a move
-		make_move
-
-
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
-	end
-
-	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the standing phase)
-	test_make_move_standing_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		handler_current_phase := phase_standing
-
-		-- Make a move
-		make_move
-
-
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		 assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
-	end
-
-	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the taxation phase)
-	test_make_move_taxation_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-		-- Set up the initial state of the board
-		-- TODO
-
-		handler_current_phase := phase_taxation
-
-		-- Make a move
-		make_move
-
-
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		 assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
 	end
 end

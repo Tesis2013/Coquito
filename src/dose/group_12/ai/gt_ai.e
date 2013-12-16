@@ -64,6 +64,7 @@ feature -- Play
 				-- Actions in the dominace phase
 			elseif (attached {GT_LOGIC_PHASE_MARSHALLING} ai_board.get_current_phase as marshalling_phase) then
 				-- Actions in the marshalling phase
+				choose_cards_to_recruit
 			elseif (attached {GT_LOGIC_PHASE_SETUP} ai_board.get_current_phase as setup_phase) then
 				-- Actions in the setup phase
 				if 	change_initial_card then
