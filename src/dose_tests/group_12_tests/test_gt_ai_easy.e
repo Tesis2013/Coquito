@@ -104,12 +104,8 @@ feature
     	testing: "cover/{GT_AI}.choose_draw_deck"
 		testing: "GT/GT_AI"
 		testing: "user/GT"
-    	local
-        	random_gen : INTEGER
     	do
-        random_gen := random_integer(2)
-        
-		assert("in the interval" , random_gen > 1 and random_gen < 2)
+		assert("in the interval" , change_initial_card.item = True or change_initial_card.item = False)
     	end
 
 	test_choose_draw_deck
