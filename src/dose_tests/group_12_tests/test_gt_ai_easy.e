@@ -102,14 +102,6 @@ feature
 			assert("in the interval" , change_initial_card.item = True or change_initial_card.item = False)
     	end
 
-	--test_choose_draw_deck
-	--note
-		--testing: "cover/{GT_AI}.choose_draw_deck"
-		--testing: "GT/GT_AI"
-		--testing: "user/GT"
-	--do
-	--end
-
 	test_choose_plot_card
 	note
 		testing: "cover/{GT_AI}.choose_plot_card"
@@ -122,12 +114,14 @@ feature
 		assert("Complete plot deck", ai_player.get_cards_in_plot_deck.size = 7)
 
 		assert("phase setup", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
-
+		-- Move to next phase
 		player_human.end_turn
-
 		player_ai.end_turn
+
 		assert("plot phase", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_plot)
 		old_size := player_ai.get_cards_in_plot_deck.size
+
+		-- Choose and play plot card
 		make_move
 
 		assert("The used plot pile should be empty", player_ai.get_cards_in_used_plot_pile.size = 0)
@@ -180,7 +174,9 @@ feature
 		end
 
 		make_move
-
+		if attached {GT_LOGIC_PHASE_CHALLENGES} current.get_current_phase as p_challenges then
+	--		p_challenges.cards_attacking (player_ai /= Void)
+		end
 		assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
 	end
 
