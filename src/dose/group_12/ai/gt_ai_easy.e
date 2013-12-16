@@ -365,19 +365,19 @@ feature {TEST_GT_AI_EASY}-- Implementation (choose_attack)
 			Result := res
 		end
 
-	can_participate(card:GT_LOGIC_CARD_CHARACTER; string: STRING):BOOLEAN
+	can_participate(card:GT_LOGIC_CARD_CHARACTER; challenge: STRING):BOOLEAN
 			-- returns if a card can participate in some challenge
 		local
 			res:BOOLEAN
 		do
 			res := ai_player.is_card_playable (card.unique_id)
-			if string = {GT_CONSTANTS}.challenge_type_military then
+			if challenge = {GT_CONSTANTS}.challenge_type_military then
 				Result := card.military and res
 			end
-			if {GT_CONSTANTS}.challenge_type_intrigue = string then
+			if {GT_CONSTANTS}.challenge_type_intrigue = challenge then
 				Result := card.intrigue and res
 			end
-			if {GT_CONSTANTS}.challenge_type_power = string  then
+			if {GT_CONSTANTS}.challenge_type_power = challenge  then
 				Result := card.power and res
 			end
 		end
@@ -393,15 +393,15 @@ feature {NONE}-- Implementations
 		from
 			i:=0
 		until
-			i=ai_player.get_cards_in_play.size
+			i >= ai_player.get_cards_in_play.to_arrayed_list.count
 		loop
-			card:=ai_player.get_cards_in_play.to_arrayed_list.array_item (i)
+			card := ai_player.get_cards_in_play.to_arrayed_list.array_item (i)
 			if attached {GT_LOGIC_CARD_CHARACTER} card then
-				count:= count + 1
+				count := count + 1
 			end
-			i:=i+1
+			i := i + 1
 		end
-		Result:=count
+		Result := count
 	end
 
 
