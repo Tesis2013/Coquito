@@ -113,30 +113,25 @@ feature
 		testing: "GT/GT_AI"
 		testing: "user/GT"
 	local
-		last_used_plot_card : GT_LOGIC_CARD_PLOT -- TODO this should be a plot card, how?.
-		initial_plot_deck : GT_LOGIC_DECK_PLOT[GT_LOGIC_CARD_PLOT]
-		chosen_plot_card : GT_LOGIC_CARD_PLOT
+		old_size : INTEGER
 	do
 		-- Check the state of the plot deck
-		initial_plot_deck := player_ai.get_cards_in_plot_deck
-		last_used_plot_card := initial_plot_deck.pop
+		assert("Complete plot deck", ai_player.get_cards_in_plot_deck.size = 7)
 
-		-- Go from Setup phase to -> plot phase
-		phase_handler.move_to_next_phase
+		assert("phase setup", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
 
-		assert("Not in the plot phase!", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_plot)
+		player_human.end_turn
 
-		-- Let the AI choose a plot card
-		chosen_plot_card := choose_plot_card
+		player_ai.end_turn
+		assert("plot phase", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_plot)
+		old_size := player_ai.get_cards_in_plot_deck.size
+		make_move
 
-		-- Assert that a new card has been selected as the plot card
-		assert("The plot card was the same as before", chosen_plot_card.unique_id /= last_used_plot_card.unique_id)
 		assert("The used plot pile should be empty", player_ai.get_cards_in_used_plot_pile.size = 0)
 
-		-- Since the player hasn't chosen a plot card yet, the size of the plot deck should be exactly 7
-		assert("Plot deck size invalid", player_ai.get_cards_in_plot_deck.size = 7)
+		assert("Plot deck size", player_ai.get_cards_in_plot_deck.size = old_size - 1)
 
-		assert("The plot card was not taken from the plot deck!!!", initial_plot_deck.peek_cards (7).has (chosen_plot_card))
+		assert("The plot deck not contain the plot card used for ai_player", not ai_player.get_cards_in_plot_deck.contain (ai_player.get_active_plot_card.unique_id))
 
 	end
 
