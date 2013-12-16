@@ -27,6 +27,8 @@ feature -- Play
 		require
 				initialized_player: ai_player/=Void
 				initialized_board: ai_board/=Void
+		local
+			challenge: STRING
 		do
 			if  (attached {GT_LOGIC_PHASE_PLOT} ai_board.get_current_phase  as plot_phase) then
 				-- Actions in the plot phase
@@ -39,19 +41,20 @@ feature -- Play
 			elseif (attached {GT_LOGIC_PHASE_CHALLENGES} ai_board.get_current_phase as challenges_phase) then
 				-- Actions in the challenges phase
 				if ai_player.is_player_turn then
-					if choose_challenge="military" then
+					challenge := choose_challenge
+					if challenge={GT_CONSTANTS}.challenge_type_military then
 						military_challenge_used := True
 						ai_player.choose_challenge_type ({GT_CONSTANTS}.challenge_type_military)
 						choose_attack({GT_CONSTANTS}.challenge_type_military)
-					elseif choose_challenge="intrigue" then
+					elseif challenge={GT_CONSTANTS}.challenge_type_intrigue then
 						intrigue_challenge_used := True
 						ai_player.choose_challenge_type ({GT_CONSTANTS}.challenge_type_intrigue)
 						choose_attack({GT_CONSTANTS}.challenge_type_intrigue)
-					elseif choose_challenge="power" then
+					elseif challenge={GT_CONSTANTS}.challenge_type_power then
 						power_challenge_used := True
 						ai_player.choose_challenge_type ({GT_CONSTANTS}.challenge_type_power)
 						choose_attack({GT_CONSTANTS}.challenge_type_power)
-					elseif choose_challenge="no challenge" then
+					elseif challenge = Void then
 	                    ai_player.end_action
 					end
 				else
@@ -229,7 +232,7 @@ feature -- Deferred methods
 			appropriate_phase: attached {GT_LOGIC_PHASE_CHALLENGES} ai_board.get_current_phase
 		deferred
 		ensure
-			correct_challenge: Result = "no challenge" or Result = {GT_CONSTANTS}.challenge_type_intrigue or Result = {GT_CONSTANTS}.challenge_type_military or Result = {GT_CONSTANTS}.challenge_type_power
+			correct_challenge: Result = Void or Result = {GT_CONSTANTS}.challenge_type_intrigue or Result = {GT_CONSTANTS}.challenge_type_military or Result = {GT_CONSTANTS}.challenge_type_power
 		end
 
 	choose_cards_to_kill

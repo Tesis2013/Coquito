@@ -276,6 +276,7 @@ feature -- Implementation
 			i: INTEGER
 			military, intrigue, power: INTEGER
 			list_challenge: ARRAYED_LIST[STRING]
+			challenge: STRING
 		do
 			i := 0
 			military := 0
@@ -328,8 +329,9 @@ feature -- Implementation
 				list_challenge.extend ({GT_CONSTANTS}.challenge_type_power)
 			end
 			if list_challenge.count = 0 then
-				Result := "no challenge"
+				Result := Void
 			else
+				challenge := list_challenge.array_item (random_integer(list_challenge.count)- 1)
 				Result := list_challenge.array_item (random_integer(list_challenge.count)- 1)
 			end
 		end -- End choose_challenge

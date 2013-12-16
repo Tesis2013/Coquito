@@ -192,3 +192,82 @@ GT_NET_CONNECTION_LISTENER
 APPLICATION         root's creation                                     
 <0000002CCF024F98>                         Routine failure.              Exit
 -------------------------------------------------------------------------------
+
+dose: system execution failed.
+Following is the set of recorded exceptions:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    eif_net_retrieved      Retrieve: unable to read type of storable.:
+<00000000062814B8>  (From SOCKET)          Runtime I/O error.            Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    eif_net_retrieved      
+<00000000062814B8>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+NETWORK_STREAM_SOCKET
+                    retrieved @7           
+<00000000062814B8>  (From SOCKET)          Routine failure.              Fail
+-------------------------------------------------------------------------------
+EQA_EVALUATOR       main_loop @6                                        
+<00000000062805E8>                         Routine failure.              Rescue
+-------------------------------------------------------------------------------
+EQA_EVALUATOR       make @7                                             
+<00000000062805E8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+EQA_EVALUATOR       root's creation                                     
+<00000000062805E8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+dose: PANIC: Unexpected harmful signal (Floating point exception) ...
+
+dose: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+TEST_GT_AI_EASY     choose_challenge @38   correct_challenge:           
+<00000000064737E8>  (From GT_AI_EASY)      Postcondition violated.       Fail
+-------------------------------------------------------------------------------
+TEST_GT_AI_EASY     choose_challenge @38                                
+<00000000064737E8>  (From GT_AI_EASY)      Routine failure.              Fail
+-------------------------------------------------------------------------------
+TEST_GT_AI_EASY     make_move @8                                        
+<00000000064737E8>  (From GT_AI)           Routine failure.              Fail
+-------------------------------------------------------------------------------
+TEST_GT_AI_EASY     test_make_move_challenges_phase @12
+<00000000064737E8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+EQA_EVALUATOR       invoke_routine                                      
+<00000000064705E8>  (From EQA_EXTERNALS)   Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           fast_call                                           
+<0000000006473068>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           call @5                                             
+<0000000006473068>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           fast_call                                           
+<00000000064D33A8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           call @5                                             
+<00000000064D33A8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+EQA_TEST_EVALUATOR  execute_test_stage @4                               
+<0000000006472F98>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+EQA_TEST_EVALUATOR  execute_test_stage @12 Unexpected harmful signal (Floating point exception):
+<0000000006472F98>                         Eiffel run-time panic.        Panic
+-------------------------------------------------------------------------------
+
+dose: dumping core to generate debugging information...

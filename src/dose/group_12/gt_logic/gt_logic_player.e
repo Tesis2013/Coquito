@@ -563,7 +563,7 @@ feature -- Commands
 			player_id = 1 and game_board.get_player_from_id (2).get_is_human = TRUE --if playing against a network player
 		then
 			create end_command.default_create
-			network_component.send (end_command)
+	--		network_component.send (end_command)
 		end
 		if
 			player_id = 1 and game_board.get_player_from_id (2).get_is_human = FALSE --if playing against AI
