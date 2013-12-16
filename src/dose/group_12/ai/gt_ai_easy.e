@@ -330,8 +330,9 @@ feature -- Implementation
 			end
 			if list_challenge.count = 0 then
 				Result := Void
+			elseif list_challenge.count = 1 then
+				Result := list_challenge.array_item (0)
 			else
-				challenge := list_challenge.array_item (random_integer(list_challenge.count)- 1)
 				Result := list_challenge.array_item (random_integer(list_challenge.count)- 1)
 			end
 		end -- End choose_challenge

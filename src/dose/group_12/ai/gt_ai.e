@@ -214,7 +214,7 @@ feature -- Deferred methods
 	choose_initial_cards
 			-- Choose initial cards to put in play
 		require
-			count_dragon_gold: ai_player.gold_dragon_tokens = 5
+	--		count_dragon_gold: ai_player.gold_dragon_tokens = 5
 			appropriate_phase: attached {GT_LOGIC_PHASE_SETUP} ai_board.get_current_phase
 		deferred
 		end

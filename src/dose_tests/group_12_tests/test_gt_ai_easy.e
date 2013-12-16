@@ -154,14 +154,34 @@ feature
 		testing: "cover/{GT_AI}.choose_attack"
 		testing: "GT/GT_AI"
 		testing: "user/GT"
+
+	local
+		correct_phase: BOOLEAN
+		phase: STRING
 	do
+		-- Set up the initial state of the board
+		-- TODO
+		from
+			correct_phase := False
+		until
+			correct_phase
+		loop
+			phase := get_current_phase.get_phase_identifer
+			if phase = {GT_CONSTANTS}.phase_plot then
+				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+			end
+			if phase /= {GT_CONSTANTS}.phase_challenges then
+				player_human.end_turn
+				player_ai.end_turn
+			else
+				correct_phase := True
+			end
+		end
 
-		-- Set up the logic state:
-		handler_current_phase := phase_challenges
+		make_move
 
-
-		-- Make sure that it is indeed the AI-players turn to attack
-
+		assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
 	end
 
 	test_choose_cards_to_recruit

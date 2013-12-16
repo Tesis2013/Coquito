@@ -391,7 +391,7 @@ feature -- Obsolete
 
 feature -- Inapplicable
 
-feature {NONE} -- Implementation
+feature {TEST_GT_AI_EASY, TEST_GT_AI_HARD} -- Implementation
 	player_one_attackers : ARRAYED_LIST[GT_LOGIC_CARD_CHARACTER]
 	player_two_attackers : ARRAYED_LIST[GT_LOGIC_CARD_CHARACTER]
 
