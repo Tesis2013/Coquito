@@ -101,7 +101,7 @@ feature
 
 	test_change_initial_card
     	note
-    	testing: "cover/{GT_AI}.choose_draw_deck"
+    	testing: "cover/{GT_AI}.change_initial_card"
 		testing: "GT/GT_AI"
 		testing: "user/GT"
     	do
