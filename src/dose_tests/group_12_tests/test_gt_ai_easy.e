@@ -98,6 +98,19 @@ feature
 		-- Make sure that the player is correctly retrieved.
 		assert("The board was not correctly set", get_board = current)
 	end
+	
+	test_change_initial_card
+    	note
+    	testing: "cover/{GT_AI}.choose_draw_deck"
+		testing: "GT/GT_AI"
+		testing: "user/GT"
+    	local
+        	random_gen : INTEGER
+    	do
+        random_gen := random_integer(2)
+        
+		assert("in the interval" , random_gen > 1 and random_gen < 2)
+    	end
 
 	test_choose_draw_deck
 	note
