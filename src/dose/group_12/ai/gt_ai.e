@@ -169,7 +169,7 @@ feature -- Deferred methods
 
 	change_initial_card: BOOLEAN
 		require
-			cards_in_hand: ai_player.get_cards_in_hand.size > 0
+	--		cards_in_hand: ai_player.get_cards_in_hand.size > 0
 			appropriate_phase: attached {GT_LOGIC_PHASE_SETUP} ai_board.get_current_phase
 			-- Not have changed the cards before
 		deferred

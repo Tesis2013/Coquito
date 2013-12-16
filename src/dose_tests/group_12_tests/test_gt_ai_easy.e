@@ -105,7 +105,9 @@ feature
 		testing: "GT/GT_AI"
 		testing: "user/GT"
     	do
-		assert("in the interval" , change_initial_card.item = True or change_initial_card.item = False)
+    		assert("phase setup", get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
+    		-- cards are then loaded this phase. Error of logic
+			assert("in the interval" , change_initial_card.item = True or change_initial_card.item = False)
     	end
 
 	test_choose_draw_deck
