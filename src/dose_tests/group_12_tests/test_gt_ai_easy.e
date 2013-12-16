@@ -47,19 +47,21 @@ feature
 		do
 			-- Create a house deck (stark) to be given to both players (each will have their own identical house deck)
 
+			-- (Instantiate player as human, with house Stark)
+			create player_human.make(TRUE, {GT_CONSTANTS}.house_stark, TRUE)
 
 			-- (Instantiate player as AI, with house Stark)
-			create player_ai.make(FALSE, {GT_CONSTANTS}.house_stark, TRUE)
-
-			-- (Instantiate player as human, with house Stark)
-			create player_human.make(TRUE, {GT_CONSTANTS}.house_stark, FALSE)
+			create player_ai.make(FALSE, {GT_CONSTANTS}.house_stark, FALSE)
 
 			-- Use this instance as the board and set players.
 			-- used on current, since we need access to private fields
-			gt_board_make(player_ai, player_human)
+			gt_board_make(player_human, player_ai)
 
 			-- instantiate the AI implementation (easy)
 			gt_ai_easy_make (player_ai, current) -- TODO: maybe get_logic_board instead.
+
+			player_human.set_ai (current)
+			player_ai.set_ai (current)
 		end
 
 
@@ -202,73 +204,18 @@ feature
 	local
 		phase: STRING
 		correct_phase: BOOLEAN
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-			end
-			if phase /= {GT_CONSTANTS}.phase_marshalling then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
-		end
 
-		-- Make a move
+	do
+		player_human.end_turn
 		make_move
+		-- Need advance the phase because in setup phase the player_ai not have cards (ERROR OF LOGIC)
+		choose_initial_cards
 
 		assert("Player ai played cards", player_ai.get_cards_in_play_as_arrayed_list.count > 0)
 		-- assert that the move has been made (ie. the AI player is ready for next phase)
 		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
 	end
 
-	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the plot phase)
-	test_make_move_plot_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		phase: STRING
-		correct_phase: BOOLEAN
-	do
-		-- Set up the initial state of the board
-		-- TODO
-
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-			end
-			if phase /= {GT_CONSTANTS}.phase_marshalling then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
-		end
-
-		-- Make a move
-		make_move
-
-
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
-	end
 
 	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the marshalling phase)
 	test_make_move_marshalling_phase
@@ -346,6 +293,21 @@ feature
 		-- assert that the move has been made (ie. the AI player is ready for next phase)
 		assert("The AI was not ready for the next phase", player_ai.is_player_ready_for_next_phase)
 	end
+
+	test_choose_card_to_kill
+		local
+			new_size, old_size: INTEGER
+			correct_phase: BOOLEAN
+			phase: STRING
+		do
+			make_move
+			handler_current_phase := phase_challenges
+			old_size := player_ai.get_cards_in_play.to_arrayed_list.count
+			choose_cards_to_kill
+			new_size := player_ai.get_cards_in_play.to_arrayed_list.count
+
+			assert("kill one card", old_size > new_size)
+		end
 
 	test_filter_character_cards_2
 	local

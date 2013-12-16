@@ -60,7 +60,7 @@ feature -- Implementation
 					from
 						i := 0
 					until
-						i = ai_player.get_cards_in_hand.size
+						i >= ai_player.get_cards_in_hand.to_arrayed_list.count
 					loop
 						card := ai_player.get_cards_in_hand.to_arrayed_list.array_item (i)
 						if card.cost = card_cost and ai_player.is_card_playable (card.unique_id) then
@@ -84,7 +84,7 @@ feature -- Implementation
 					from
 						i := 0
 					until
-						i = ai_player.get_cards_in_hand.size
+						i >= ai_player.get_cards_in_hand.to_arrayed_list.count
 					loop
 						card := ai_player.get_cards_in_hand.to_arrayed_list.array_item (i)
 						if card.cost = card_cost and ai_player.is_card_playable (card.unique_id) then
