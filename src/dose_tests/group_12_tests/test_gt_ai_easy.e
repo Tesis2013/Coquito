@@ -174,9 +174,7 @@ feature
 		end
 
 		make_move
-		if attached {GT_LOGIC_PHASE_CHALLENGES} current.get_current_phase as p_challenges then
-	--		p_challenges.cards_attacking (player_ai /= Void)
-		end
+
 		assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
 	end
 
@@ -228,6 +226,7 @@ feature
 		-- Make a move
 		make_move
 
+		assert("Player ai played cards", player_ai.get_cards_in_play_as_arrayed_list.count > 0)
 		-- assert that the move has been made (ie. the AI player is ready for next phase)
 		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
 	end
