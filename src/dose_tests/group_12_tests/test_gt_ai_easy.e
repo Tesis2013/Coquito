@@ -209,6 +209,7 @@ feature
 		player_human.end_turn
 		make_move
 		-- Need advance the phase because in setup phase the player_ai not have cards (ERROR OF LOGIC)
+		-- For choose initial cards here use gold of the plot card choosed, and not the initial gold (5)
 		choose_initial_cards
 
 		assert("Player ai played cards", player_ai.get_cards_in_play_as_arrayed_list.count > 0)
@@ -250,7 +251,7 @@ feature
 
 		-- Make a move
 		make_move
-
+		assert("Player ai played cards", player_ai.get_cards_in_play_as_arrayed_list.count > 0)
 		-- assert that the move has been made (ie. the AI player is ready for next phase)
 		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
 	end
@@ -293,21 +294,6 @@ feature
 		-- assert that the move has been made (ie. the AI player is ready for next phase)
 		assert("The AI was not ready for the next phase", player_ai.is_player_ready_for_next_phase)
 	end
-
-	test_choose_card_to_kill
-		local
-			new_size, old_size: INTEGER
-			correct_phase: BOOLEAN
-			phase: STRING
-		do
-			make_move
-			handler_current_phase := phase_challenges
-			old_size := player_ai.get_cards_in_play.to_arrayed_list.count
-			choose_cards_to_kill
-			new_size := player_ai.get_cards_in_play.to_arrayed_list.count
-
-			assert("kill one card", old_size > new_size)
-		end
 
 	test_filter_character_cards_2
 	local
