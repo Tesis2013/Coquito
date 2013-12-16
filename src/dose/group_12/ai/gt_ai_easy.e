@@ -336,18 +336,23 @@ feature -- Implementation
 			end
 		end -- End choose_challenge
 
-feature -- Implementation (choose_attack)
+feature {TEST_GT_AI_EASY}-- Implementation (choose_attack)
 
 	filter_character_cards(cards_to_filter : ARRAYED_LIST[GT_LOGIC_CARD]; challenge: STRING):ARRAYED_LIST[GT_LOGIC_CARD_CHARACTER]
 		  --Given an arrayed_list of cards returns another arrayed_list with only the characters cards of the first one
+		require correct_challenge: 	challenge = {GT_CONSTANTS}.challenge_type_intrigue or
+				challenge = {GT_CONSTANTS}.challenge_type_military or
+				challenge = {GT_CONSTANTS}.challenge_type_power
 		local
 			i : INTEGER_32
 			res : ARRAYED_LIST[GT_LOGIC_CARD_CHARACTER]
 			auxiliar_card:GT_LOGIC_CARD
 		do
-			res.make (0)
-			from i:= 0
-			until i = cards_to_filter.count
+			create res.make (0)
+			from
+				i := 0
+			until
+				i >= cards_to_filter.count
 			loop
 				auxiliar_card := cards_to_filter.array_at (i)
 				if attached {GT_LOGIC_CARD_CHARACTER} auxiliar_card as character then
