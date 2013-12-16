@@ -291,9 +291,11 @@ feature -- Implementation
 					if attached {GT_LOGIC_CARD_CHARACTER} ai_player.get_cards_in_play.to_arrayed_list.array_item(i) as character then
 						if character.military and not military_challenge_used then
 							military := military + character.strength
-						elseif character.intrigue and not intrigue_challenge_used then
+						end
+						if character.intrigue and not intrigue_challenge_used then
 							intrigue := intrigue + character.strength
-						elseif character.power and not power_challenge_used then
+						end
+						if character.power and not power_challenge_used then
 							power := power + character.strength
 						end
 					end
@@ -309,9 +311,11 @@ feature -- Implementation
 					if attached {GT_LOGIC_CARD_CHARACTER} ai_board.get_player_one.get_cards_in_play.to_arrayed_list.array_item(i) as character then
 						if character.military and not military_challenge_used then
 							military := military - character.strength
-						elseif character.intrigue and not intrigue_challenge_used then
+						end
+						if character.intrigue and not intrigue_challenge_used then
 							intrigue := intrigue - character.strength
-						elseif character.power and not power_challenge_used then
+						end
+						if character.power and not power_challenge_used then
 							power := power - character.strength
 						end
 					end
