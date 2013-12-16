@@ -124,6 +124,11 @@ feature {ANY} -- iniialization
 			current_phase.start_phase
 		end
 
+	set_current_phase(phase:GT_LOGIC_PHASE)
+	do
+		current_phase := phase
+	end
+
 feature {NONE}
 	game_board : GT_LOGIC_BOARD
 end
