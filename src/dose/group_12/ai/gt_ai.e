@@ -40,7 +40,7 @@ feature -- Play
 				-- Actions in the draw phase
 			elseif (attached {GT_LOGIC_PHASE_CHALLENGES} ai_board.get_current_phase as challenges_phase) then
 				-- Actions in the challenges phase
-				if ai_player.is_player_turn then
+				if challenges_phase.get_current_attacking_player.player_id = ai_player.player_id then
 					challenge := choose_challenge
 					if challenge={GT_CONSTANTS}.challenge_type_military then
 						military_challenge_used := True
