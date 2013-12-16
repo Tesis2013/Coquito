@@ -319,18 +319,18 @@ feature -- Implementation
 			end -- loop
 			create list_challenge.make(0)
 			if military > 0 then
-				list_challenge.extend ("military")
+				list_challenge.extend ({GT_CONSTANTS}.challenge_type_military)
 			end
 			if intrigue > 0 then
-				list_challenge.extend ("intrigue")
+				list_challenge.extend ({GT_CONSTANTS}.challenge_type_intrigue)
 			end
 			if power > 0 then
-				list_challenge.extend ("power")
+				list_challenge.extend ({GT_CONSTANTS}.challenge_type_power)
 			end
 			if list_challenge.count = 0 then
 				Result := "no challenge"
 			else
-				Result := list_challenge.array_item (random_integer(list_challenge.count-1))
+				Result := list_challenge.array_item (random_integer(list_challenge.count)- 1)
 			end
 		end -- End choose_challenge
 

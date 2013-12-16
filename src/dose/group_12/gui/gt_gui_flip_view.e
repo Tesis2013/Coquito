@@ -133,7 +133,7 @@ feature {ANY}
 	get_current_card_id : INTEGER_32
 	do
 		if card_pile.size > 0 then
-			Result := card_pile.peek_cards (card_pile.size).at (card_counter).unique_id
+			Result := card_pile.to_arrayed_list.array_item (card_counter).unique_id
 		else
 			Result := 0
 		end

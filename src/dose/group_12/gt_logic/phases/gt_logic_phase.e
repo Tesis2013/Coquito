@@ -136,30 +136,27 @@ feature -- Queries
 		gold := player_object.gold_dragon_tokens
 		card_to_play := player_object.get_card_by_id (card_id)
 
-		if
-			attached {GT_LOGIC_CARD_CHARACTER} card_to_play as card_c
-		then
-			if
-				card_c.house = player_object.house_card
-			then
+		if card_to_play /= Void then
+			if attached {GT_LOGIC_CARD_CHARACTER} card_to_play as card_c then
 				if
-					card_c.cost - player_object.reducedcost >= 0
+					card_c.house = player_object.house_card
 				then
-					card_cost := card_c.cost - player_object.reducedcost
-				else
-					card_cost := 0
+					if	card_c.cost - player_object.reducedcost >= 0 then
+						card_cost := card_c.cost - player_object.reducedcost
+					else
+						card_cost := 0
+					end
 				end
+			else
+				card_cost := card_to_play.cost
 			end
-		else
-			card_cost := card_to_play.cost
+			if (gold < card_cost) then
+				result := false
+			else
+				result := true
+			end
+		else Result := False
 		end
-
-		if (gold < card_cost) then
-			result := false
-		else
-			result := true
-		end
-
 	end
 
 feature {NONE} -- Implementation

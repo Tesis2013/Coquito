@@ -105,33 +105,36 @@ feature {ANY}
 
 		-- Check if the card is playable
 		card_to_play := player_object.get_card_by_id (card_id)
-
-		-- Does the player have the card in his hand?
-		if (not player_object.get_cards_in_hand.contain (card_id)) then
-			has_failed := true
-		end
-
-		-- Can the player afford the playing cost of the card?
-		if (not is_card_affordable (card_id, player_object)) then
-			has_failed := true
-		end
-
-		-- Has the player already played a card with the limited keyword?
-		if (card_to_play.keywords.has(limited_keyword) and player_object.has_played_limited) then
-			has_failed := true
-		end
-
-		-- Should not be able to place duplicates of a unique card (see rules)
-		if card_to_play.keywords.has (unique_keyword) then
-			unique_cards_in_play := player_object.get_cards_in_play.get_cards_by_keyword (unique_keyword)
-			if unique_cards_in_play /= void and unique_cards_in_play.count > 0 then
+		if card_to_play /= Void then
+			-- Does the player have the card in his hand?
+			if (not player_object.get_cards_in_hand.contain (card_id)) then
 				has_failed := true
 			end
-		end
 
-		-- If the player violated one of the previous checks, then the card is not playable.
-		if not has_failed then
-			result := true
+			-- Can the player afford the playing cost of the card?
+			if (not is_card_affordable (card_id, player_object)) then
+				has_failed := true
+			end
+
+			-- Has the player already played a card with the limited keyword?
+			if (card_to_play.keywords.has(limited_keyword) and player_object.has_played_limited) then
+				has_failed := true
+			end
+
+			-- Should not be able to place duplicates of a unique card (see rules)
+			if card_to_play.keywords.has (unique_keyword) then
+				unique_cards_in_play := player_object.get_cards_in_play.get_cards_by_keyword (unique_keyword)
+				if unique_cards_in_play /= void and unique_cards_in_play.count > 0 then
+					has_failed := true
+				end
+			end
+
+			-- If the player violated one of the previous checks, then the card is not playable.
+			if not has_failed then
+				result := true
+			end
+		else
+			Result := False
 		end
 	end
 
