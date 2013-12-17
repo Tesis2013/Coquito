@@ -255,8 +255,45 @@ feature
 
 	end
 
+	test_choose_cards_to_recruit_2
+	local
+		correct_phase: BOOLEAN
+		phase: STRING
+	do
+		from
+			correct_phase := False
+		until
+			correct_phase
+		loop
+			phase := get_current_phase.get_phase_identifer
+			if phase = {GT_CONSTANTS}.phase_plot then
+				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+			end
+			if phase /= {GT_CONSTANTS}.phase_marshalling then
+				player_human.end_turn
+				player_ai.end_turn
+			else
+				correct_phase := True
+			end
+		end -- end to correct phase
 
-	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the setup phase)
+		player_ai.get_cards_in_play.make
+		player_ai.get_cards_in_hand.make
+		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
+		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16)) -- put 3 cards in hand
+		player_ai.gold_dragon_tokens := 7 -- set gold_dragons
+
+		choose_cards_to_recruit --call to method
+
+		assert("check count cards in play",player_ai.get_cards_in_play.size /= 0)
+		assert("check count cards in play 2", player_ai.get_cards_in_play.size = 1 OR player_ai.get_cards_in_play.size = 2)
+	end
+
+
+
+	-- Test the the AI is ablech to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the setup phase)
 	test_make_move_setup_phase
 	note
 		testing: "covers/{GT_AI}.make_move"
