@@ -418,7 +418,7 @@ feature {NONE}-- Implementations
 		play, playing_cards: ARRAYED_LIST[GT_LOGIC_CARD]
 		i, power: INTEGER
 	do
-		create playing_cards.make (cards.count)
+		create playing_cards.make (0)
 
 		from
 			i := 0
@@ -426,7 +426,7 @@ feature {NONE}-- Implementations
 			i>= cards.count and power>=power_op
 		loop
 			if phase.is_card_playable_in_phase (cards.array_item (i).unique_id, ai_player)then
-				playing_cards.array_put (cards.array_item (i), i)
+				playing_cards.extend (cards.array_item (i))
 				-- considers only the strength of the card
 				if attached {GT_LOGIC_CARD_CHARACTER} cards.array_item (i) as current_card then
 					power := power + current_card.strength

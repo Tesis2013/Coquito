@@ -1,8 +1,8 @@
 note
-	description: "Test class for {GT_AI_TEST}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description	: "Test class for {GT_AI_TEST}."
+	author		: "RioCuarto2"
+	date		: "17/12/2013"
+	revision	: "$Revision$"
 
 class
 	TEST_GT_AI_EASY
@@ -16,8 +16,6 @@ inherit
 		on_prepare
 		select gt_test_default_create
 	end
-
-
 
 	GT_LOGIC_BOARD
 		rename
