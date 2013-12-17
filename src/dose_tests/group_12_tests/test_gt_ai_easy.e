@@ -101,6 +101,7 @@ feature
     	do
     		assert("phase setup", get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
     		-- cards are then loaded this phase. Error of logic
+    		-- missing method for change cards
 			assert("in the interval" , change_initial_card.item = True or change_initial_card.item = False)
     	end
 
@@ -174,10 +175,70 @@ feature
 				correct_phase := True
 			end
 		end
+		if attached {GT_LOGIC_PHASE_CHALLENGES} get_current_phase as current_phase then
+			-- The player ai can play all challenges
+			assert("can player_ai play military challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_military))
+			assert("can player_ai play intrigue challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_intrigue))
+			assert("can player_ai play power challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_power))
 
-		make_move
+			if player_ai.house_card = {GT_CONSTANTS}.house_lannister then
+				-- Add character card in play
+				if player_ai.get_cards_in_house_deck.contain (37) then
+					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (37))
 
-		assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
+					-- The player ai performed the attack
+					choose_attack({GT_CONSTANTS}.challenge_type_military)
+					if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_house_deck.get_card_by_id (37) as military_card then
+						assert("playing card with id 37", current_phase.player_one_attackers.is_inserted (military_card))
+					else
+						assert("ERROR", False)
+					end
+
+				elseif player_ai.get_cards_in_hand.contain (37) then
+					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (37))
+
+					-- The player ai performed the attack
+					choose_attack({GT_CONSTANTS}.challenge_type_military)
+					if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (37) as military_card then
+						assert("playing card with id 37", current_phase.player_one_attackers.is_inserted (military_card))
+					else
+						assert("ERROR", False)
+					end
+
+				end
+				elseif player_ai.house_card = {GT_CONSTANTS}.house_stark then
+				-- Add character card in play
+				if player_ai.get_cards_in_house_deck.contain (5) then
+					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+
+					-- The player ai performed the attack
+					choose_attack({GT_CONSTANTS}.challenge_type_military)
+					if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_house_deck.get_card_by_id (5) as military_card then
+						assert("playing card with id 5", current_phase.player_one_attackers.is_inserted (military_card))
+					else
+						assert("ERROR", False)
+					end
+
+				elseif player_ai.get_cards_in_hand.contain (5) then
+					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (5))
+
+					-- The player ai performed the attack
+					choose_attack({GT_CONSTANTS}.challenge_type_military)
+					if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (5) as military_card then
+						assert("playing card with id 5", current_phase.player_one_attackers.is_inserted (military_card))
+					else
+						assert("ERROR", False)
+					end
+				end
+
+			end
+
+			player_ai.end_turn
+			assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
+		else
+			assert("ERROR", False)
+		end
+
 	end
 
 	test_choose_cards_to_recruit

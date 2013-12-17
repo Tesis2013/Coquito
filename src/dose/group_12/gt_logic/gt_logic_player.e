@@ -92,7 +92,7 @@ feature {NONE} -- private
 		reducedCost := amount
 	end
 
-feature {NONE} --decks and piles
+feature {TEST_GT_AI_EASY} --decks and piles
 	in_play_collection: GT_LOGIC_IN_PLAY[GT_LOGIC_CARD]
 	house_deck: GT_LOGIC_DECK_HOUSE[GT_LOGIC_CARD]
 	in_hand: GT_LOGIC_HAND[GT_LOGIC_CARD]
@@ -519,7 +519,7 @@ feature -- Commands
 	require
 		-- Requires that card_id.Type = character card?
 		attached {GT_LOGIC_PHASE_CHALLENGES} phase_handler.get_current_phase as challenge_phase
-		challenge_phase.current_subphase = {GT_CONSTANTS}.challenge_subphase_type_setup
+--		challenge_phase.current_subphase = {GT_CONSTANTS}.challenge_subphase_type_setup
 	local
 		attack_command : GT_NET_CHOOSE_ATTACKER_COMMAND
 	do

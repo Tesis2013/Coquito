@@ -30,6 +30,11 @@ feature -- Creation
 		game_board := board
 		phase := {GT_CONSTANTS}.phase_challenges
 
+		create player_one_attackers.make (0)
+		create player_two_attackers.make (0)
+		create player_one_defenders.make (0)
+		create player_two_defenders.make (0)
+
 	end
 
 
@@ -50,7 +55,7 @@ feature -- Queries
 
 	do
 		card := player_object.get_card_by_id(card_id) --gets the card.
-		if  attached {GT_LOGIC_CARD_CHARACTER} card and player_1_made_inbetween_move=TRUE and player_2_made_inbetween_move=TRUE and card.kneeling=false then
+		if  attached {GT_LOGIC_CARD_CHARACTER} card and card.kneeling=false then --player_1_made_inbetween_move=TRUE and player_2_made_inbetween_move=TRUE 
 				result := TRUE
 		end
 		if  attached {GT_LOGIC_CARD_EVENT} card then --event cards can be played. TODO check if gui knows when to choose attackers.

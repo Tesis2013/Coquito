@@ -186,7 +186,7 @@ feature -- Implementation
 				from
 					i := 0
 				until
-					i >= possible_cards.count - 1
+					i >= possible_cards.count
 				loop
 					ai_player.choose_attacker (possible_cards.array_item (i).unique_id)
 					i := i + 1
