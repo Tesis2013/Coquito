@@ -17,8 +17,6 @@ inherit
 		select gt_test_default_create
 	end
 
-
-
 	GT_LOGIC_BOARD
 		rename
 			default_create as gt_board_default_create,
