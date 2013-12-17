@@ -7,7 +7,6 @@ note
 class
 	TEST_GT_AI_EASY
 
-
 inherit
 	EQA_TEST_SET
 	rename
@@ -188,21 +187,19 @@ feature
 					else
 						assert("ERROR", False)
 					end
+				elseif player_ai.get_cards_in_hand.contain (37) then
+					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (37))
 
-					elseif player_ai.get_cards_in_hand.contain (37) then
-						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (37))
-
-						-- The player ai performed the attack
-						choose_attack({GT_CONSTANTS}.challenge_type_military)
-						if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (37) as military_card then
-							assert("playing card with id 37", current_phase.player_one_attackers.is_inserted (military_card))
-						else
-							assert("ERROR", False)
-						end
-
+					-- The player ai performed the attack
+					choose_attack({GT_CONSTANTS}.challenge_type_military)
+					if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (37) as military_card then
+						assert("playing card with id 37", current_phase.player_one_attackers.is_inserted (military_card))
+					else
+						assert("ERROR", False)
 					end
-					elseif player_ai.house_card = {GT_CONSTANTS}.house_stark then
-						-- Add character card in play
+				end
+				elseif player_ai.house_card = {GT_CONSTANTS}.house_stark then
+					-- Add character card in play
 					if player_ai.get_cards_in_house_deck.contain (5) then
 						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
 
@@ -213,22 +210,20 @@ feature
 					else
 						assert("ERROR", False)
 					end
+				elseif player_ai.get_cards_in_hand.contain (5) then
+					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (5))
 
-					elseif player_ai.get_cards_in_hand.contain (5) then
-						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (5))
-
-						-- The player ai performed the attack
+					-- The player ai performed the attack
 						choose_attack({GT_CONSTANTS}.challenge_type_military)
-						if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (5) as military_card then
-							assert("playing card with id 5", current_phase.player_one_attackers.is_inserted (military_card))
-						else
-							assert("ERROR", False)
-						end
+					if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (5) as military_card then
+						assert("playing card with id 5", current_phase.player_one_attackers.is_inserted (military_card))
+					else
+						assert("ERROR", False)
 					end
-
 				end
 
-				player_ai.end_turn
+			end
+			   	player_ai.end_turn
 				assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
 			else
 				assert("ERROR", False)
@@ -248,6 +243,10 @@ feature
 		end
 
 	test_choose_cards_to_recruit_2
+		note
+			testing: "cover/{GT_AI}.choose_cards_to_recruit_2"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
 		local
 			correct_phase: BOOLEAN
 			phase: STRING
