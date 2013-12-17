@@ -385,6 +385,10 @@ feature
 		end
 
 	test_filter_character_cards_2
+		note
+			testing: "covers/{GT_AI}.filter_character_cards_2"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
 		local
 			correct_phase: BOOLEAN
 			phase: STRING
@@ -423,7 +427,7 @@ feature
 	-- Test choose challenge in case that the users have te same cards in play
 	test_choose_challenge_p01
 		note
-			testing: "covers/{GT_AI}.make_move"
+			testing: "covers/{GT_AI}.choose_challenge_p01"
 			testing: "GT/GT_AI"
 			testing: "user/GT"
 		local
@@ -464,6 +468,10 @@ feature
 		end
 
 	test_choose_challenge_p02
+		note
+			testing: "covers/{GT_AI}.choose_challenge_p02"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
 		local
 			correct_phase: BOOLEAN
 			phase: STRING
