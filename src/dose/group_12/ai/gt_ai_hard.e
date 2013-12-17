@@ -167,14 +167,14 @@ feature -- Implementation
 				if intrigue > -1 then
 					create tuple.default_create
 					tuple.put (intrigue, 2)
-					tuple.put ("intrigue", 1)
+					tuple.put ({GT_CONSTANTS}.challenge_type_intrigue, 1)
 					list_challenge.extend (tuple)
 				end
 			else
 				if intrigue > 1 then
 					create tuple.default_create
 					tuple.put (intrigue, 2)
-					tuple.put ("intrigue", 1)
+					tuple.put ({GT_CONSTANTS}.challenge_type_intrigue, 1)
 					list_challenge.extend (tuple)
 				end
 			end
@@ -182,25 +182,25 @@ feature -- Implementation
 				if military > -1 then
 					create tuple.default_create
 					tuple.put (intrigue, 2)
-					tuple.put ("military", 1)
+					tuple.put ({GT_CONSTANTS}.challenge_type_military, 1)
 					list_challenge.extend (tuple)
 				end
 			else
 				if military > 1 then
 					create tuple.default_create
 					tuple.put (military, 2)
-			    	tuple.put ("military", 1)
+			    	tuple.put ({GT_CONSTANTS}.challenge_type_military, 1)
 					list_challenge.extend (tuple)
 				end
 			end
 			if power > 0 then
 				create tuple.default_create
 				tuple.put (power, 2)
-				tuple.put ("power", 1)
+				tuple.put ({GT_CONSTANTS}.challenge_type_power, 1)
 				list_challenge.extend (tuple)
 			end
 			if list_challenge.count = 0 then
-				Result := "no challenge"
+				Result := Void
 			else
 			    tuple := less(list_challenge)
 				Result := tuple.s
@@ -300,7 +300,11 @@ feature -- Implementation
 		do
 			 -- i obtain the strength of the "better" human's card for a said challenge
 			better_human_card := biggest_opponent_card(ai_board.get_player_one.get_cards_in_play_as_arrayed_list, challenge)
-			human_card_strength := better_human_card.strength
+			if better_human_card = Void then
+				human_card_strength := 0
+			else
+				human_card_strength := better_human_card.strength
+			end
 				-- i should now choose the minimun tuple of cards that win against the human card
 			all_my_character_cards := filter_character_cards (ai_player.get_cards_in_play_as_arrayed_list, challenge)
 			possibles_moves := permutation (all_my_character_cards)
@@ -403,7 +407,7 @@ feature -- Implementation (choose_attack)
 			end
 		end
 
-	biggest_opponent_card(opponent_cards : ARRAYED_LIST[GT_LOGIC_CARD]; challenge:STRING  ) : GT_LOGIC_CARD_CHARACTER
+	biggest_opponent_card(opponent_cards : ARRAYED_LIST[GT_LOGIC_CARD]; challenge:STRING) : GT_LOGIC_CARD_CHARACTER
 			-- selects the  opponent's card who has the biggest value for a said challenge
 		local
 			momentary_the_best_card:GT_LOGIC_CARD_CHARACTER
@@ -414,16 +418,16 @@ feature -- Implementation (choose_attack)
 			from i := 0
 			until i =  opponent_cards.count
 			loop
-					auxiliar_card := opponent_cards.array_at (i)
-					if attached {GT_LOGIC_CARD_CHARACTER} auxiliar_card as character then
-						if character.strength > momentary_the_greater_value and can_participate(character, challenge) then
-							-- ask if the current card has a bigger streng than the one who has been choosen before
-							momentary_the_greater_value := character.strength
-							momentary_the_best_card := character
-						end
+				auxiliar_card := opponent_cards.array_at (i)
+				if attached {GT_LOGIC_CARD_CHARACTER} auxiliar_card as character then
+					if character.strength > momentary_the_greater_value then --and can_participate(character, challenge) then
+						-- ask if the current card has a bigger strength than the one who has been choosen before
+						momentary_the_greater_value := character.strength
+						momentary_the_best_card := character
 					end
-					i := i + 1
-				 end
+				end
+				i := i + 1
+			end
 			Result := momentary_the_best_card
 		end
 
