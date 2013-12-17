@@ -95,6 +95,11 @@ feature -- Queries
 		result := phase_handler.get_current_phase
 	end
 
+	set_current_phase_in_board(phase:GT_LOGIC_PHASE)
+	do
+		phase_handler.set_current_phase (phase)
+	end
+
 	-- Can I have an instance of the board?
 	get_logic_board : GT_LOGIC_BOARD
 	do
@@ -382,7 +387,7 @@ feature -- Commands
 				check invalid_player_id : false end
 			end
 		end
-		
+
 		-- send network command
 		player_one.set_starting_player (starting_player)
 

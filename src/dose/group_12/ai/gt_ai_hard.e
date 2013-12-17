@@ -375,9 +375,11 @@ feature -- Implementation (choose_attack)
 			res : ARRAYED_LIST[GT_LOGIC_CARD_CHARACTER]
 			auxiliar_card:GT_LOGIC_CARD
 		do
-			res.make (0)
-			from i:= 0
-			until i = cards_to_filter.count
+			create res.make (0)
+			from
+				i := 0
+			until
+			 i >= cards_to_filter.count
 			loop
 				auxiliar_card := cards_to_filter.array_at (i)
 				if attached {GT_LOGIC_CARD_CHARACTER} auxiliar_card as character then
@@ -385,7 +387,7 @@ feature -- Implementation (choose_attack)
 						res.extend (character)
 					end
 				end
-				i:= i+1
+				i := i + 1
 			end
 			Result := res
 		end
