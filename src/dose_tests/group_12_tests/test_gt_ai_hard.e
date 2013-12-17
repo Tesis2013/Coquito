@@ -1,8 +1,8 @@
 note
-	description: "Test class for {TEST_GT_AI_HARD}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description	: "Test class for {TEST_GT_AI_HARD}."
+	author		: "RioCuarto2"
+	date		: "17/12/2013"
+	revision	: "$Revision$"
 
 class
 	TEST_GT_AI_HARD
