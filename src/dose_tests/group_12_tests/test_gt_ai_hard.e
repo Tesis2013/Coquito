@@ -146,21 +146,6 @@ feature
 
 	end
 
-	test_choose_attack
-	note
-		testing: "cover/{GT_AI}.choose_attack"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-
-		-- Set up the logic state:
-		handler_current_phase := phase_challenges
-
-
-		-- Make sure that it is indeed the AI-players turn to attack
-
-	end
-
 	test_choose_cards_to_recruit
 	note
 		testing: "cover/{GT_AI}.choose_cards_to_recruit"
@@ -406,5 +391,54 @@ feature
 
 		assert("the same cards in play, No challenge?", choose_challenge = Void)
 	end
+
+	test_choose_attack
+	note
+		testing: "cover/{GT_AI}.choose_attack"
+		testing: "GT/GT_AI"
+		testing: "user/GT"
+
+	local
+		correct_phase: BOOLEAN
+		phase: STRING
+	do
+		-- Set up the initial state of the board
+		-- TODO
+		from
+			correct_phase := False
+		until
+			correct_phase
+		loop
+			phase := get_current_phase.get_phase_identifer
+			if phase = {GT_CONSTANTS}.phase_plot then
+				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+			end
+			if phase /= {GT_CONSTANTS}.phase_challenges then
+				player_human.end_turn
+				player_ai.end_turn
+			else
+				correct_phase := True
+			end
+		end
+		if attached {GT_LOGIC_PHASE_CHALLENGES} get_current_phase as current_phase then
+			-- The player ai can play all challenges
+			assert("can player_ai play military challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_military))
+			assert("can player_ai play intrigue challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_intrigue))
+			assert("can player_ai play power challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_power))
+
+			-- The player ai performed the attack
+			choose_attack({GT_CONSTANTS}.challenge_type_military)
+
+			assert("plays no cards for have strength zero", current_phase.player_one_attackers.is_empty)
+
+			player_ai.end_turn
+			assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
+		else
+			assert("ERROR", False)
+		end
+
+	end
+
 
 end

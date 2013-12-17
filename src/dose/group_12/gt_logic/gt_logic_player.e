@@ -92,7 +92,7 @@ feature {NONE} -- private
 		reducedCost := amount
 	end
 
-feature {TEST_GT_AI_EASY} --decks and piles
+feature {TEST_GT_AI_EASY, TEST_GT_AI_HARD} --decks and piles
 	in_play_collection: GT_LOGIC_IN_PLAY[GT_LOGIC_CARD]
 	house_deck: GT_LOGIC_DECK_HOUSE[GT_LOGIC_CARD]
 	in_hand: GT_LOGIC_HAND[GT_LOGIC_CARD]
