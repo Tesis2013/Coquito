@@ -374,204 +374,199 @@ feature
 
 	-- Test choose challenge in case that the users have te same cards in play
 	test_choose_challenge_p01
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-	do
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		note
+			testing: "covers/{GT_AI}.make_move"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+		do
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
-		end
-		player_ai.get_cards_in_play.make
-		player_ai.get_cards_in_hand.make
-		-- Put cards in hand
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
-		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (5))
-		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (6))
-		-- Put cards in play
-		player_ai.play(5)
-		player_ai.play(6)
-		player_human.play(5)
-		player_human.play(6)
+			player_ai.get_cards_in_play.make
+			player_ai.get_cards_in_hand.make
+			-- Put cards in hand
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
+			player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (5))
+			player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (6))
+			-- Put cards in play
+			player_ai.play(5)
+			player_ai.play(6)
+			player_human.play(5)
+			player_human.play(6)
 
-		assert("the same cards in play, No challenge?", choose_challenge = {GT_CONSTANTS}.challenge_type_military)
-	end
+			assert("the same cards in play, No challenge?", choose_challenge = {GT_CONSTANTS}.challenge_type_military)
+		end
 
 	test_choose_attack_2
-	note
-		testing: "cover/{GT_AI}.choose_attack"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		note
+			testing: "cover/{GT_AI}.choose_attack_2"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+		do
+			-- Set up the initial state of the board
+			-- TODO
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
+			if attached {GT_LOGIC_PHASE_CHALLENGES} get_current_phase as current_phase then
+				-- The player ai can play all challenges
+				assert("can player_ai play military challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_military))
+				assert("can player_ai play intrigue challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_intrigue))
+				assert("can player_ai play power challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_power))
+
+				-- The player ai performed the attack
+				choose_attack({GT_CONSTANTS}.challenge_type_military)
+
+				assert("plays no cards for have strength zero", current_phase.player_one_attackers.is_empty)
+
 				player_ai.end_turn
+				assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
 			else
-				correct_phase := True
+				assert("ERROR", False)
 			end
 		end
-		if attached {GT_LOGIC_PHASE_CHALLENGES} get_current_phase as current_phase then
-			-- The player ai can play all challenges
-			assert("can player_ai play military challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_military))
-			assert("can player_ai play intrigue challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_intrigue))
-			assert("can player_ai play power challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_power))
 
-			-- The player ai performed the attack
-			choose_attack({GT_CONSTANTS}.challenge_type_military)
-
-			assert("plays no cards for have strength zero", current_phase.player_one_attackers.is_empty)
-
-			player_ai.end_turn
-			assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
-		else
-			assert("ERROR", False)
-		end
-
-	end
 	test_choose_attack
-	note
-		testing: "cover/{GT_AI}.choose_attack"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		note
+			testing: "cover/{GT_AI}.choose_attack"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+		do
+			-- Set up the initial state of the board
+			-- TODO
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
+			if attached {GT_LOGIC_PHASE_CHALLENGES} get_current_phase as current_phase then
+				-- The player ai can play all challenges
+				assert("can player_ai play military challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_military))
+				assert("can player_ai play intrigue challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_intrigue))
+				assert("can player_ai play power challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_power))
+
+				if player_ai.house_card = {GT_CONSTANTS}.house_lannister then
+					-- Add character card in play
+					if player_ai.get_cards_in_house_deck.contain (37) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (37))
+					elseif player_ai.get_cards_in_hand.contain (37) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (37))
+					end
+
+					-- Add character card in play
+					if player_ai.get_cards_in_house_deck.contain (40) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (40))
+					elseif player_ai.get_cards_in_hand.contain (40) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (40))
+					end
+
+					-- Add character card in play
+					if player_ai.get_cards_in_house_deck.contain (42) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (42))
+					elseif player_ai.get_cards_in_hand.contain (42) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (42))
+					end
+
+					-- Add character card in play
+					if player_ai.get_cards_in_house_deck.contain (43) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (43))
+					elseif player_ai.get_cards_in_hand.contain (43) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (43))
+					end
+
+					choose_attack ({GT_CONSTANTS}.challenge_type_military)
+
+					assert("cards attacking (because the player_ai has more strength than the opponent)", current_phase.player_one_attackers.count > 0 )
+
+				elseif player_ai.house_card = {GT_CONSTANTS}.house_stark then
+					-- Add character card in play
+					if player_ai.get_cards_in_house_deck.contain (5) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+					elseif player_ai.get_cards_in_hand.contain (5) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (5))
+					end
+
+					-- Add character card in play
+					if player_ai.get_cards_in_house_deck.contain (16) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16))
+					elseif player_ai.get_cards_in_hand.contain (16) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (16))
+					end
+
+					-- Add character card in play
+					if player_ai.get_cards_in_house_deck.contain (12) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (12))
+					elseif player_ai.get_cards_in_hand.contain (12) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (12))
+					end
+
+					-- Add character card in play
+					if player_ai.get_cards_in_house_deck.contain (23) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (23))
+					elseif player_ai.get_cards_in_hand.contain (23) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (23))
+					end
+
+					choose_attack ({GT_CONSTANTS}.challenge_type_military)
+
+					assert("cards attacking (because the player_ai has more strength than the opponent)", current_phase.player_one_attackers.count > 0 )
+				end
 				player_ai.end_turn
+				assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
 			else
-				correct_phase := True
+				assert("ERROR", False)
 			end
 		end
-		if attached {GT_LOGIC_PHASE_CHALLENGES} get_current_phase as current_phase then
-			-- The player ai can play all challenges
-			assert("can player_ai play military challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_military))
-			assert("can player_ai play intrigue challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_intrigue))
-			assert("can player_ai play power challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_power))
-
-			if player_ai.house_card = {GT_CONSTANTS}.house_lannister then
-				-- Add character card in play
-				if player_ai.get_cards_in_house_deck.contain (37) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (37))
-				elseif player_ai.get_cards_in_hand.contain (37) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (37))
-				end
-
-				-- Add character card in play
-				if player_ai.get_cards_in_house_deck.contain (40) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (40))
-				elseif player_ai.get_cards_in_hand.contain (40) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (40))
-				end
-
-				-- Add character card in play
-				if player_ai.get_cards_in_house_deck.contain (42) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (42))
-				elseif player_ai.get_cards_in_hand.contain (42) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (42))
-				end
-
-				-- Add character card in play
-				if player_ai.get_cards_in_house_deck.contain (43) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (43))
-				elseif player_ai.get_cards_in_hand.contain (43) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (43))
-				end
-
-				choose_attack ({GT_CONSTANTS}.challenge_type_military)
-
-				assert("cards attacking (because the player_ai has more strength than the opponent)", current_phase.player_one_attackers.count > 0 )
-
-			elseif player_ai.house_card = {GT_CONSTANTS}.house_stark then
-				-- Add character card in play
-				if player_ai.get_cards_in_house_deck.contain (5) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
-				elseif player_ai.get_cards_in_hand.contain (5) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (5))
-				end
-
-				-- Add character card in play
-				if player_ai.get_cards_in_house_deck.contain (16) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16))
-				elseif player_ai.get_cards_in_hand.contain (16) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (16))
-				end
-
-				-- Add character card in play
-				if player_ai.get_cards_in_house_deck.contain (12) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (12))
-				elseif player_ai.get_cards_in_hand.contain (12) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (12))
-				end
-
-				-- Add character card in play
-				if player_ai.get_cards_in_house_deck.contain (23) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (23))
-				elseif player_ai.get_cards_in_hand.contain (23) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (23))
-				end
-
-				choose_attack ({GT_CONSTANTS}.challenge_type_military)
-
-				assert("cards attacking (because the player_ai has more strength than the opponent)", current_phase.player_one_attackers.count > 0 )
-
-			end
-
-			player_ai.end_turn
-			assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
-		else
-			assert("ERROR", False)
-		end
-
-	end
 
 	test_permutation
 
