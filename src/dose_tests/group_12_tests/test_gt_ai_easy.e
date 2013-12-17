@@ -131,15 +131,15 @@ feature
 			assert("The plot deck not contain the plot card used for ai_player", not ai_player.get_cards_in_plot_deck.contain (ai_player.get_active_plot_card.unique_id))
 		end
 
-	test_choose_defense
-		note
-			testing: "cover/{GT_AI}.choose_defense"
-			testing: "GT/GT_AI"
-			testing: "user/GT"
-		do
-			-- set up the logic state
-			handler_current_phase:= phase_challenges
-		end
+--	test_choose_defense
+--		note
+--			testing: "cover/{GT_AI}.choose_defense"
+--			testing: "GT/GT_AI"
+--			testing: "user/GT"
+--		do
+--			-- set up the logic state
+--			handler_current_phase:= phase_challenges
+--		end
 
 	test_choose_attack
 		note
@@ -230,17 +230,17 @@ feature
 			end
 		end
 
-	test_choose_cards_to_recruit
-		note
-			testing: "cover/{GT_AI}.choose_cards_to_recruit"
-			testing: "GT/GT_AI"
-			testing: "user/GT"
-		do
-			-- set up the logic state: give gold, cards, set phase etc.
-			handler_current_phase := phase_marshalling
+--	test_choose_cards_to_recruit
+--		note
+--			testing: "cover/{GT_AI}.choose_cards_to_recruit"
+--			testing: "GT/GT_AI"
+--			testing: "user/GT"
+--		do
+--			-- set up the logic state: give gold, cards, set phase etc.
+--			handler_current_phase := phase_marshalling
 
-			-- Assert that cards are recruited
-		end
+--			-- Assert that cards are recruited
+--		end
 
 	test_choose_cards_to_recruit_2
 		note
