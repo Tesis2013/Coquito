@@ -569,7 +569,10 @@ feature
 		end
 
 	test_permutation
-
+		note
+			testing: "cover/{GT_AI}.test_permutation"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
 		local
 			cards: ARRAYED_LIST[GT_LOGIC_CARD]
 			res: ARRAYED_LIST[ARRAYED_LIST[GT_LOGIC_CARD]]
