@@ -454,6 +454,8 @@ feature
 				correct_phase := True
 			end
 		end
+		player_ai.get_cards_in_play.make
+		player_ai.get_cards_in_hand.make
 		-- Put cards in hand
 		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
 		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
@@ -490,6 +492,8 @@ feature
 				correct_phase := True
 			end
 		end
+		player_ai.get_cards_in_play.make
+		player_ai.get_cards_in_hand.make
 		-- Put cards in hand
 		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
 		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
