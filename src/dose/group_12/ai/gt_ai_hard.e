@@ -442,7 +442,7 @@ feature -- Implementation (choose_challenge)
 		do
 			create tuple.default_create
 			tuple.put ({INTEGER}.max_value, 2)
-			tuple.put ("no challenge", 1)
+			tuple.put (Void, 1)
 			from
 				i := 0
 			until
