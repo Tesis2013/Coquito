@@ -418,7 +418,7 @@ feature
 		player_human.play(5)
 		player_human.play(6)
 
-		assert("the same cards in play, No challenge?", choose_challenge = Void)
+		assert("the same cards in play, No challenge?", choose_challenge = {GT_CONSTANTS}.challenge_type_military)
 	end
 
 	test_choose_attack_2
