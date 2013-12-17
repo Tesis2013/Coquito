@@ -310,6 +310,7 @@ feature -- Implementation
 			possibles_moves := permutation (all_my_character_cards)
 			minimun_number_of_cards := {INTEGER}.max_value
 			my_minimum_winner_strength := {INTEGER}.max_value
+			create possible_move.make (0)
 			from
 				i := 0
 			until
@@ -334,14 +335,13 @@ feature -- Implementation
 				end
 				i := i +1
 			end
-
-			from
-				i := 0
-			until
-				i >= my_move.count
-			loop
-				ai_player.choose_attacker (my_move.array_item (i).unique_id)
-				i := i + 1
+			if my_move /= Void then
+				from i := 0
+				until i >= my_move.count
+				loop
+					ai_player.choose_attacker (my_move.array_item (i).unique_id)
+					i := i + 1
+				end
 			end
 		end
 
