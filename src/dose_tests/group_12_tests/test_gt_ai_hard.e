@@ -300,79 +300,77 @@ feature
 
 	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the challenges phase)
 	test_make_move_challenges_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		size : INTEGER
-		correct_phase : BOOLEAN
-		phase : STRING
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		-- I move until the phase of challenge
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		note
+			testing: "covers/{GT_AI}.make_move"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			size : INTEGER
+			correct_phase : BOOLEAN
+			phase : STRING
+		do
+			-- Set up the initial state of the board
+			-- TODO
+			-- I move until the phase of challenge
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
+			-- Make a move
+			make_move
+
+			-- assert that the move has been made (ie. the AI player is ready for next phase)
+			assert("The AI was not ready for the next phase", player_ai.is_player_ready_for_next_phase)
 		end
-
-		-- Make a move
-		make_move
-
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		assert("The AI was not ready for the next phase", player_ai.is_player_ready_for_next_phase)
-	end
-
 
 	test_filter_character_cards_2
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-		cards: ARRAYED_LIST[GT_LOGIC_CARD_CHARACTER]
-		i: INTEGER
-	do
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+			cards: ARRAYED_LIST[GT_LOGIC_CARD_CHARACTER]
+			i: INTEGER
+		do
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
-		end
-		cards := current.filter_character_cards (player_ai.get_cards_in_hand.to_arrayed_list, {GT_CONSTANTS}.challenge_type_military)
+			cards := current.filter_character_cards (player_ai.get_cards_in_hand.to_arrayed_list, {GT_CONSTANTS}.challenge_type_military)
 
-		from
-			i := 0
-		until
-			i >= cards.count
-		loop
-			assert("card can participen in military challnges", cards.array_item (i).military)
-			i := i + 1
+			from
+				i := 0
+			until
+				i >= cards.count
+			loop
+				assert("card can participen in military challnges", cards.array_item (i).military)
+				i := i + 1
+			end
 		end
-	end
 
 	-- Test choose challenge in case that the users have te same cards in play
 	test_choose_challenge_p01
