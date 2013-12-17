@@ -386,10 +386,10 @@ feature
 		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (5))
 		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (6))
 		-- Put cards in play
-		player_ai.get_cards_in_play.add_card (player_ai.get_cards_in_hand.get_card_by_id (5))
-		player_ai.get_cards_in_play.add_card (player_ai.get_cards_in_hand.get_card_by_id (6))
-		player_human.get_cards_in_play.add_card (player_human.get_cards_in_hand.get_card_by_id (5))
-		player_human.get_cards_in_play.add_card (player_human.get_cards_in_hand.get_card_by_id (6))
+		player_ai.play(5)
+		player_ai.play(6)
+		player_human.play(5)
+		player_human.play(6)
 
 		assert("the same cards in play, No challenge?", choose_challenge = Void)
 	end
