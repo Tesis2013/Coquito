@@ -1,5 +1,5 @@
 note
-	description	: "Test class for {GT_AI_TEST}."
+	description	: "Test class for {TEST_GT_AI_EASY}."
 	author		: "RioCuarto2"
 	date		: "17/12/2013"
 	revision	: "$Revision$"
