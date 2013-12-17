@@ -337,6 +337,10 @@ feature
 		end
 
 	test_filter_character_cards_2
+		note
+			testing: "cover/{GT_AI}.filter_character_cards_2"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
 		local
 			correct_phase: BOOLEAN
 			phase: STRING
