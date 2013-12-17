@@ -63,36 +63,36 @@ feature
 -- Test to make sure that the player is correctly set in the AI.
 feature
 	test_set_player
-	note
-		testing: "covers/{GT_AI}.set_player"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
+		note
+			testing: "covers/{GT_AI}.set_player"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		do
 			-- Set the player of the AI
 			set_player (player_ai)
 
 			-- Make sure that the player is correctly retrieved.
 			assert("The player was not correctly set", get_player = player_ai)
-	end
+		end
 
 	test_set_board
-	note
-		testing: "covers/{GT_AI}.set_board"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-		-- Set the player of the AI
-		set_board (current)
+		note
+			testing: "covers/{GT_AI}.set_board"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		do
+			-- Set the player of the AI
+			set_board (current)
 
-		-- Make sure that the player is correctly retrieved.
-		assert("The board was not correctly set", get_board = current)
-	end
+			-- Make sure that the player is correctly retrieved.
+			assert("The board was not correctly set", get_board = current)
+		end
 
 	test_change_initial_card
     	note
-    	testing: "cover/{GT_AI}.change_initial_card"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
+    		testing: "cover/{GT_AI}.change_initial_card"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
     	do
     		assert("phase setup", get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
     		-- cards are then loaded this phase. Error of logic
@@ -100,51 +100,49 @@ feature
     	end
 
 	test_choose_draw_deck
-	note
-		testing: "cover/{GT_AI}.choose_draw_deck"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-	end
+		note
+			testing: "cover/{GT_AI}.choose_draw_deck"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		do
+		end
 
 	test_choose_plot_card
-	note
-		testing: "cover/{GT_AI}.choose_plot_card"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		old_size : INTEGER
-	do
-		-- Check the state of the plot deck
-		assert("Complete plot deck", ai_player.get_cards_in_plot_deck.size = 7)
+		note
+			testing: "cover/{GT_AI}.choose_plot_card"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			old_size : INTEGER
+		do
+			-- Check the state of the plot deck
+			assert("Complete plot deck", ai_player.get_cards_in_plot_deck.size = 7)
 
-		assert("phase setup", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
+			assert("phase setup", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
 
-		player_human.end_turn
+			player_human.end_turn
 
-		player_ai.end_turn
-		assert("plot phase", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_plot)
-		old_size := player_ai.get_cards_in_plot_deck.size
-		make_move
+			player_ai.end_turn
+			assert("plot phase", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_plot)
+			old_size := player_ai.get_cards_in_plot_deck.size
+			make_move
 
-		assert("The used plot pile should be empty", player_ai.get_cards_in_used_plot_pile.size = 0)
+			assert("The used plot pile should be empty", player_ai.get_cards_in_used_plot_pile.size = 0)
 
-		assert("Plot deck size", player_ai.get_cards_in_plot_deck.size = old_size - 1)
+			assert("Plot deck size", player_ai.get_cards_in_plot_deck.size = old_size - 1)
 
-		assert("The plot deck not contain the plot card used for ai_player", not ai_player.get_cards_in_plot_deck.contain (ai_player.get_active_plot_card.unique_id))
-
-	end
+			assert("The plot deck not contain the plot card used for ai_player", not ai_player.get_cards_in_plot_deck.contain (ai_player.get_active_plot_card.unique_id))
+		end
 
 	test_choose_defense
-	note
-		testing: "cover/{GT_AI}.choose_defense"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-		-- set up the logic state
-		handler_current_phase:= phase_challenges
-
-	end
+		note
+			testing: "cover/{GT_AI}.choose_defense"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		do
+			-- set up the logic state
+			handler_current_phase:= phase_challenges
+		end
 
 	test_choose_cards_to_recruit
 		note
@@ -190,40 +188,40 @@ feature
 
 	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the setup phase)
 	test_make_move_setup_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		phase: STRING
-		correct_phase: BOOLEAN
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		note
+			testing: "covers/{GT_AI}.make_move"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			phase: STRING
+			correct_phase: BOOLEAN
+		do
+			-- Set up the initial state of the board
+			-- TODO
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_marshalling then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_marshalling then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
+
+			-- Make a move
+			make_move
+
+			-- assert that the move has been made (ie. the AI player is ready for next phase)
+			assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
 		end
-
-		-- Make a move
-		make_move
-
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
-	end
 
 	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the plot phase)
 	test_make_move_plot_phase
