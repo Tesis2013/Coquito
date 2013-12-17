@@ -550,5 +550,30 @@ feature
 
 	end
 
+	test_permutation
 
+		local
+			cards: ARRAYED_LIST[GT_LOGIC_CARD]
+			res: ARRAYED_LIST[ARRAYED_LIST[GT_LOGIC_CARD]]
+		do
+			create cards.make(0)
+			res := permutation (cards)
+			assert("Correct Size. Cards with size zero", res.count = 0)
+
+			cards.extend (player_ai.get_cards_in_house_deck.pop)
+			res := permutation (cards)
+			assert("Correct Size. Cards with size one", res.count = 1)
+
+			cards.extend (player_ai.get_cards_in_house_deck.pop)
+			res := permutation (cards)
+			assert("Correct Size. Cards with size two", res.count = 3)
+
+			cards.extend (player_ai.get_cards_in_house_deck.pop)
+			res := permutation (cards)
+			assert("Correct Size. Cards with size three", res.count = 7)
+
+			cards.extend (player_ai.get_cards_in_house_deck.pop)
+			res := permutation (cards)
+			assert("Correct Size. Cards with size four", res.count = 15)
+		end
 end

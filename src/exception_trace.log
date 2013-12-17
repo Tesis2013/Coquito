@@ -271,3 +271,57 @@ EQA_TEST_EVALUATOR  execute_test_stage @12 Unexpected harmful signal (Floating p
 -------------------------------------------------------------------------------
 
 dose: dumping core to generate debugging information...
+
+dose: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+dose: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+EQA_EVALUATOR       root's creation        Unexpected harmful signal (Segmentation violation):
+<0000000007564C78>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+dose: dumping core to generate debugging information...
+
+dose: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+dose: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+EQA_EVALUATOR       root's creation        Unexpected harmful signal (Segmentation violation):
+<0000000007464C78>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+dose: dumping core to generate debugging information...
+
+dose: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+dose: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+EQA_EVALUATOR       root's creation        Unexpected harmful signal (Segmentation violation):
+<0000000007633C48>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+dose: dumping core to generate debugging information...

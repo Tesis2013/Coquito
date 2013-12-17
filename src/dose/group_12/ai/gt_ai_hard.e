@@ -456,7 +456,7 @@ feature -- Implementation (choose_challenge)
 			Result := tuple
 		end -- End less
 
-feature -- Implementation (choose_defense)
+feature {TEST_GT_AI_HARD}-- Implementation (choose_defense)
 
 	cards_to_play(power_op: INTEGER ; cards: ARRAYED_LIST[GT_LOGIC_CARD]): ARRAYED_LIST[GT_LOGIC_CARD]
 			-- Given a array of the cards, the power of oponent and the actual phase, returns the minimal convination of the cards
@@ -486,10 +486,10 @@ feature -- Implementation (choose_defense)
 		require
 			cards /= Void
 		local
-			i: INTEGER
+			size, i: INTEGER
 			res: ARRAYED_LIST[ARRAYED_LIST[GT_LOGIC_CARD]]
-			first: ARRAYED_LIST[GT_LOGIC_CARD]
-			perm_two, perm_one: ARRAYED_LIST[ARRAYED_LIST[GT_LOGIC_CARD]]
+			aux, cards_writable, first: ARRAYED_LIST[GT_LOGIC_CARD]
+
 		do
 			create res.make (0)
 			if cards.count = 0 then
@@ -499,24 +499,59 @@ feature -- Implementation (choose_defense)
 				Result := res
 			else
 				create first.make (0)
-				first.extend (cards.array_item (i))
-				res.extend (first)
-				cards.remove
-				perm_one := permutation(cards)
-				res.fill (perm_one)
+				first.extend (cards.array_item (0))
 
+				cards_writable := remove_first(cards)
+				res := permutation(cards_writable)
+
+				size := res.count
 				from
 					i := 0
 				until
-					i >= perm_two.count
+					i >= size
 				loop
-					perm_two.array_item(i).extend (first.array_item (0))
+					create aux.make (1)
+					aux.copy(res.array_item (i))
+					aux.extend (first.array_item (0))
+					res.extend (aux)
 					i := i + 1
 				end
+				res.extend (first)
 
-				res.fill (perm_two)
 				Result := res
 			end
+		end
+
+	fill (perm: ARRAYED_LIST[ARRAYED_LIST[GT_LOGIC_CARD]]; res: ARRAYED_LIST[ARRAYED_LIST[GT_LOGIC_CARD]]): ARRAYED_LIST[ARRAYED_LIST[GT_LOGIC_CARD]]
+		local
+			i: INTEGER
+		do
+			from
+				i := 0
+			until
+				i >= perm.count
+			loop
+				res.extend (perm.array_item (i))
+				i := i + 1
+			end
+			Result := res
+		end
+
+	remove_first (cards: ARRAYED_LIST[GT_LOGIC_CARD]): ARRAYED_LIST[GT_LOGIC_CARD]
+		local
+			res: ARRAYED_LIST[GT_LOGIC_CARD]
+			i: INTEGER
+		do
+			create res.make (0)
+			from
+				i := 1
+			until
+				i >= cards.count
+			loop
+				res.extend (cards.array_item (i))
+				i := i + 1
+			end
+			Result := res
 		end
 
 	cards_playable(cards: ARRAYED_LIST[GT_LOGIC_CARD]): ARRAYED_LIST[GT_LOGIC_CARD]
