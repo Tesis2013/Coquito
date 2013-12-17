@@ -66,36 +66,36 @@ feature
 -- Test to make sure that the player is correctly set in the AI.
 feature
 	test_set_player
-	note
-		testing: "covers/{GT_AI}.set_player"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
+		note
+			testing: "covers/{GT_AI}.set_player"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		do
 			-- Set the player of the AI
 			set_player (player_ai)
 
 			-- Make sure that the player is correctly retrieved.
 			assert("The player was not correctly set", get_player = player_ai)
-	end
+		end
 
 	test_set_board
-	note
-		testing: "covers/{GT_AI}.set_board"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-		-- Set the player of the AI
-		set_board (current)
+		note
+			testing: "covers/{GT_AI}.set_board"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		do
+			-- Set the player of the AI
+			set_board (current)
 
-		-- Make sure that the player is correctly retrieved.
-		assert("The board was not correctly set", get_board = current)
-	end
+			-- Make sure that the player is correctly retrieved.
+			assert("The board was not correctly set", get_board = current)
+		end
 
 	test_change_initial_card
     	note
-    	testing: "cover/{GT_AI}.change_initial_card"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
+    		testing: "cover/{GT_AI}.change_initial_card"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
     	do
     		assert("phase setup", get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
     		-- cards are then loaded this phase. Error of logic
@@ -104,80 +104,77 @@ feature
     	end
 
 	test_choose_plot_card
-	note
-		testing: "cover/{GT_AI}.choose_plot_card"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		old_size : INTEGER
-	do
-		-- Check the state of the plot deck
-		assert("Complete plot deck", ai_player.get_cards_in_plot_deck.size = 7)
+		note
+			testing: "cover/{GT_AI}.choose_plot_card"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			old_size : INTEGER
+		do
+			-- Check the state of the plot deck
+			assert("Complete plot deck", ai_player.get_cards_in_plot_deck.size = 7)
 
-		assert("phase setup", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
-		-- Move to next phase
-		player_human.end_turn
-		player_ai.end_turn
+			assert("phase setup", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_setup)
+			-- Move to next phase
+			player_human.end_turn
+			player_ai.end_turn
 
-		assert("plot phase", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_plot)
-		old_size := player_ai.get_cards_in_plot_deck.size
+			assert("plot phase", phase_handler.get_current_phase.get_phase_identifer = {GT_CONSTANTS}.phase_plot)
+			old_size := player_ai.get_cards_in_plot_deck.size
 
-		-- Choose and play plot card
-		make_move
+			-- Choose and play plot card
+			make_move
 
-		assert("The used plot pile should be empty", player_ai.get_cards_in_used_plot_pile.size = 0)
+			assert("The used plot pile should be empty", player_ai.get_cards_in_used_plot_pile.size = 0)
 
-		assert("Plot deck size", player_ai.get_cards_in_plot_deck.size = old_size - 1)
+			assert("Plot deck size", player_ai.get_cards_in_plot_deck.size = old_size - 1)
 
-		assert("The plot deck not contain the plot card used for ai_player", not ai_player.get_cards_in_plot_deck.contain (ai_player.get_active_plot_card.unique_id))
-
-	end
+			assert("The plot deck not contain the plot card used for ai_player", not ai_player.get_cards_in_plot_deck.contain (ai_player.get_active_plot_card.unique_id))
+		end
 
 	test_choose_defense
-	note
-		testing: "cover/{GT_AI}.choose_defense"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
-		-- set up the logic state
-		handler_current_phase:= phase_challenges
-
-	end
+		note
+			testing: "cover/{GT_AI}.choose_defense"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		do
+			-- set up the logic state
+			handler_current_phase:= phase_challenges
+		end
 
 	test_choose_attack
-	note
-		testing: "cover/{GT_AI}.choose_attack"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		note
+			testing: "cover/{GT_AI}.choose_attack"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+		do
+			-- Set up the initial state of the board
+			-- TODO
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
-		end
-		if attached {GT_LOGIC_PHASE_CHALLENGES} get_current_phase as current_phase then
-			-- The player ai can play all challenges
-			assert("can player_ai play military challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_military))
-			assert("can player_ai play intrigue challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_intrigue))
-			assert("can player_ai play power challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_power))
+			if attached {GT_LOGIC_PHASE_CHALLENGES} get_current_phase as current_phase then
+				-- The player ai can play all challenges
+				assert("can player_ai play military challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_military))
+				assert("can player_ai play intrigue challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_intrigue))
+				assert("can player_ai play power challenges", current_phase.can_player_play_challenge (player_ai, {GT_CONSTANTS}.challenge_type_power))
 
 			if player_ai.house_card = {GT_CONSTANTS}.house_lannister then
 				-- Add character card in play
@@ -192,322 +189,318 @@ feature
 						assert("ERROR", False)
 					end
 
-				elseif player_ai.get_cards_in_hand.contain (37) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (37))
+					elseif player_ai.get_cards_in_hand.contain (37) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (37))
 
-					-- The player ai performed the attack
-					choose_attack({GT_CONSTANTS}.challenge_type_military)
-					if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (37) as military_card then
-						assert("playing card with id 37", current_phase.player_one_attackers.is_inserted (military_card))
-					else
-						assert("ERROR", False)
+						-- The player ai performed the attack
+						choose_attack({GT_CONSTANTS}.challenge_type_military)
+						if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (37) as military_card then
+							assert("playing card with id 37", current_phase.player_one_attackers.is_inserted (military_card))
+						else
+							assert("ERROR", False)
+						end
+
 					end
+					elseif player_ai.house_card = {GT_CONSTANTS}.house_stark then
+						-- Add character card in play
+					if player_ai.get_cards_in_house_deck.contain (5) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
 
-				end
-				elseif player_ai.house_card = {GT_CONSTANTS}.house_stark then
-				-- Add character card in play
-				if player_ai.get_cards_in_house_deck.contain (5) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
-
-					-- The player ai performed the attack
-					choose_attack({GT_CONSTANTS}.challenge_type_military)
+						-- The player ai performed the attack
+						choose_attack({GT_CONSTANTS}.challenge_type_military)
 					if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_house_deck.get_card_by_id (5) as military_card then
 						assert("playing card with id 5", current_phase.player_one_attackers.is_inserted (military_card))
 					else
 						assert("ERROR", False)
 					end
 
-				elseif player_ai.get_cards_in_hand.contain (5) then
-					player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (5))
+					elseif player_ai.get_cards_in_hand.contain (5) then
+						player_ai.in_play_collection.add_card (player_ai.get_cards_in_hand.get_card_by_id (5))
 
-					-- The player ai performed the attack
-					choose_attack({GT_CONSTANTS}.challenge_type_military)
-					if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (5) as military_card then
-						assert("playing card with id 5", current_phase.player_one_attackers.is_inserted (military_card))
-					else
-						assert("ERROR", False)
+						-- The player ai performed the attack
+						choose_attack({GT_CONSTANTS}.challenge_type_military)
+						if attached {GT_LOGIC_CARD_CHARACTER} player_ai.get_cards_in_hand.get_card_by_id (5) as military_card then
+							assert("playing card with id 5", current_phase.player_one_attackers.is_inserted (military_card))
+						else
+							assert("ERROR", False)
+						end
 					end
+
 				end
 
+				player_ai.end_turn
+				assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
+			else
+				assert("ERROR", False)
 			end
-
-			player_ai.end_turn
-			assert("Ready for next phase", player_ai.is_player_ready_for_next_phase)
-		else
-			assert("ERROR", False)
 		end
 
-	end
-
 	test_choose_cards_to_recruit
-	note
-		testing: "cover/{GT_AI}.choose_cards_to_recruit"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	do
+		note
+			testing: "cover/{GT_AI}.choose_cards_to_recruit"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		do
+			-- set up the logic state: give gold, cards, set phase etc.
+			handler_current_phase := phase_marshalling
 
-		-- set up the logic state: give gold, cards, set phase etc.
-		handler_current_phase := phase_marshalling
-
-		-- Assert that cards are recruited
-
-	end
+			-- Assert that cards are recruited
+		end
 
 	test_choose_cards_to_recruit_2
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-	do
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-			end
-			if phase /= {GT_CONSTANTS}.phase_marshalling then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
-		end -- end to correct phase
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+		do
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_marshalling then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
+			end -- end to correct phase
 
-		player_ai.get_cards_in_play.make
-		player_ai.get_cards_in_hand.make
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16)) -- put 3 cards in hand
-		player_ai.gold_dragon_tokens := 7 -- set gold_dragons
+			player_ai.get_cards_in_play.make
+			player_ai.get_cards_in_hand.make
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16)) -- put 3 cards in hand
+			player_ai.gold_dragon_tokens := 7 -- set gold_dragons
 
-		choose_cards_to_recruit --call to method
+			choose_cards_to_recruit --call to method
 
-		assert("check count cards in play",player_ai.get_cards_in_play.size /= 0)
-		assert("check count cards in play 2", player_ai.get_cards_in_play.size = 1 OR player_ai.get_cards_in_play.size = 2)
-	end
+			assert("check count cards in play",player_ai.get_cards_in_play.size /= 0)
+			assert("check count cards in play 2", player_ai.get_cards_in_play.size = 1 OR player_ai.get_cards_in_play.size = 2)
+		end
 
 
 
 	-- Test the the AI is ablech to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the setup phase)
 	test_make_move_setup_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		phase: STRING
-		correct_phase: BOOLEAN
+		note
+			testing: "covers/{GT_AI}.make_move"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			phase: STRING
+			correct_phase: BOOLEAN
 
-	do
-		player_human.end_turn
-		make_move
-		-- Need advance the phase because in setup phase the player_ai not have cards (ERROR OF LOGIC)
-		-- For choose initial cards here use gold of the plot card choosed, and not the initial gold (5)
-		choose_initial_cards
+		do
+			player_human.end_turn
+			make_move
+			-- Need advance the phase because in setup phase the player_ai not have cards (ERROR OF LOGIC)
+			-- For choose initial cards here use gold of the plot card choosed, and not the initial gold (5)
+			choose_initial_cards
 
-		assert("Player ai played cards", player_ai.get_cards_in_play_as_arrayed_list.count > 0)
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
-	end
+			assert("Player ai played cards", player_ai.get_cards_in_play_as_arrayed_list.count > 0)
+			-- assert that the move has been made (ie. the AI player is ready for next phase)
+			assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
+		end
 
 
 	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the marshalling phase)
 	test_make_move_marshalling_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		-- I move until the phase of marshalling
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		note
+			testing: "covers/{GT_AI}.make_move"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+		do
+			-- Set up the initial state of the board
+			-- TODO
+			-- I move until the phase of marshalling
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_marshalling then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_marshalling then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
-		end
 
-		-- Make a move
-		make_move
-		assert("Player ai played cards", player_ai.get_cards_in_play_as_arrayed_list.count > 0)
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
-	end
+			-- Make a move
+			make_move
+			assert("Player ai played cards", player_ai.get_cards_in_play_as_arrayed_list.count > 0)
+			-- assert that the move has been made (ie. the AI player is ready for next phase)
+			assert("The AI was not ready for the next phase", is_player_ready_for_next_phase(player_ai.player_id))
+		end
 
 	-- Test the the AI is able to make a move that leads the controlled player to be in a state where he is ready to go to the next phase (in this case the challenges phase)
 	test_make_move_challenges_phase
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		size : INTEGER
-		correct_phase : BOOLEAN
-		phase : STRING
-	do
-		-- Set up the initial state of the board
-		-- TODO
-		-- I move until the phase of challenge
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		note
+			testing: "covers/{GT_AI}.make_move"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			size : INTEGER
+			correct_phase : BOOLEAN
+			phase : STRING
+		do
+			-- Set up the initial state of the board
+			-- TODO
+			-- I move until the phase of challenge
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
+
+			-- Make a move
+			make_move
+
+			-- assert that the move has been made (ie. the AI player is ready for next phase)
+			assert("The AI was not ready for the next phase", player_ai.is_player_ready_for_next_phase)
 		end
-
-		-- Make a move
-		make_move
-
-		-- assert that the move has been made (ie. the AI player is ready for next phase)
-		assert("The AI was not ready for the next phase", player_ai.is_player_ready_for_next_phase)
-	end
 
 	test_filter_character_cards_2
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-		cards: ARRAYED_LIST[GT_LOGIC_CARD_CHARACTER]
-		i: INTEGER
-	do
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+			cards: ARRAYED_LIST[GT_LOGIC_CARD_CHARACTER]
+			i: INTEGER
+		do
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
-		end
-		cards := current.filter_character_cards (player_ai.get_cards_in_hand.to_arrayed_list, {GT_CONSTANTS}.challenge_type_military)
+			cards := current.filter_character_cards (player_ai.get_cards_in_hand.to_arrayed_list, {GT_CONSTANTS}.challenge_type_military)
 
-		from
-			i := 0
-		until
-			i >= cards.count
-		loop
-			assert("card can participen in military challnges", cards.array_item (i).military)
-			i := i + 1
+			from
+				i := 0
+			until
+				i >= cards.count
+			loop
+				assert("card can participen in military challnges", cards.array_item (i).military)
+				i := i + 1
+			end
 		end
-	end
 
 	-- Test choose challenge in case that the users have te same cards in play
 	test_choose_challenge_p01
-	note
-		testing: "covers/{GT_AI}.make_move"
-		testing: "GT/GT_AI"
-		testing: "user/GT"
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-	do
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		note
+			testing: "covers/{GT_AI}.make_move"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+		do
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
-		end
-		player_ai.get_cards_in_play.make
-		player_ai.get_cards_in_hand.make
-		-- Put cards in hand
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
-		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (5))
-		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (6))
-		-- Put cards in play
-		player_ai.play(5)
-		player_ai.play(6)
-		player_human.play(5)
-		player_human.play(6)
+			player_ai.get_cards_in_play.make
+			player_ai.get_cards_in_hand.make
+			-- Put cards in hand
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
+			player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (5))
+			player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (6))
+			-- Put cards in play
+			player_ai.play(5)
+			player_ai.play(6)
+			player_human.play(5)
+			player_human.play(6)
 
-		assert("the same cards in play, No challenge?", choose_challenge = Void)
-	end
+			assert("the same cards in play, No challenge?", choose_challenge = Void)
+		end
 
 	test_choose_challenge_p02
-	local
-		correct_phase: BOOLEAN
-		phase: STRING
-	do
-		from
-			correct_phase := False
-		until
-			correct_phase
-		loop
-			phase := get_current_phase.get_phase_identifer
-			if phase = {GT_CONSTANTS}.phase_plot then
-				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
-				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+		do
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
 			end
-			if phase /= {GT_CONSTANTS}.phase_challenges then
-				player_human.end_turn
-				player_ai.end_turn
-			else
-				correct_phase := True
-			end
+			player_ai.get_cards_in_play.make
+			player_ai.get_cards_in_hand.make
+			-- Put cards in hand
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16))
+			player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (5))
+			player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (6))
+			-- Put cards in play
+			player_ai.play(5)
+			player_ai.play(6)
+			player_ai.play(16)
+			player_human.play(5)
+			player_human.play(6)
+
+			assert("military?", choose_challenge = {GT_CONSTANTS}.challenge_type_military)
 		end
-		player_ai.get_cards_in_play.make
-		player_ai.get_cards_in_hand.make
-		-- Put cards in hand
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
-		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16))
-		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (5))
-		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (6))
-		-- Put cards in play
-		player_ai.play(5)
-		player_ai.play(6)
-		player_ai.play(16)
-		player_human.play(5)
-		player_human.play(6)
-
-		assert("military?", choose_challenge = {GT_CONSTANTS}.challenge_type_military)
-	end
-
 end
