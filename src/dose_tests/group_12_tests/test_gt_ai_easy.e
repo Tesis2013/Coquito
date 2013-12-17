@@ -510,4 +510,92 @@ feature
 
 			assert("military?", choose_challenge = {GT_CONSTANTS}.challenge_type_military)
 		end
+
+	test_cards_to_defense_0
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+			a: ARRAYED_LIST[GT_LOGIC_CARD]
+		do
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
+			end
+			player_ai.get_cards_in_play.make
+			player_ai.get_cards_in_hand.make
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+			-- tiene 3 de fuerza - militar power
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
+			-- tiene 3 de fuerza - intriga power
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (20))
+			-- tiene 1 de fuerza - militar
+			player_ai.play(5)
+			player_ai.play(6)
+			player_ai.play(20)
+			create a.make (0)
+			if attached {GT_LOGIC_PHASE_CHALLENGES} Current.get_current_phase as phase_challengue then
+				a := cards_to_defense({GT_CONSTANTS}.challenge_type_military, 6, player_ai.get_cards_in_play_as_arrayed_list, phase_challengue)
+				assert("not 1?", not a.has(player_ai.get_cards_in_house_deck.get_card_by_id (6)))
+				assert("not 2?", not a.has(player_ai.get_cards_in_house_deck.get_card_by_id (5)))
+				assert("yes?", a.has(player_ai.get_cards_in_house_deck.get_card_by_id (20)))
+				-- Elije una defensa ficticia, elijiendo elmenor de militar
+			end
+		end
+
+	test_cards_to_defense_1
+		local
+			correct_phase: BOOLEAN
+			phase: STRING
+			a: ARRAYED_LIST[GT_LOGIC_CARD]
+		do
+			from
+				correct_phase := False
+			until
+				correct_phase
+			loop
+				phase := get_current_phase.get_phase_identifer
+				if phase = {GT_CONSTANTS}.phase_plot then
+					player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+					player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				end
+				if phase /= {GT_CONSTANTS}.phase_challenges then
+					player_human.end_turn
+					player_ai.end_turn
+				else
+					correct_phase := True
+				end
+			end
+			player_ai.get_cards_in_play.make
+			player_ai.get_cards_in_hand.make
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+			-- tiene 3 de fuerza - militar power
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
+			-- tiene 3 de fuerza - intriga power
+			player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (20))
+			-- tiene 1 de fuerza - militar
+			player_ai.play(5)
+			player_ai.play(6)
+			player_ai.play(20)
+			create a.make (0)
+			if attached {GT_LOGIC_PHASE_CHALLENGES} Current.get_current_phase as phase_challengue then
+				a := cards_to_defense({GT_CONSTANTS}.challenge_type_military, 5, player_ai.get_cards_in_play_as_arrayed_list, phase_challengue)
+				assert("not 1?", not a.has(player_ai.get_cards_in_house_deck.get_card_by_id (6)))
+				assert("yes?", a.has(player_ai.get_cards_in_house_deck.get_card_by_id (5)))
+				assert("yes?", a.has(player_ai.get_cards_in_house_deck.get_card_by_id (20)))
+				-- Elije una defensa con card 5 y 20
+			end
+		end
 end

@@ -161,7 +161,7 @@ feature -- Implementation
 			-- Power put in play
 			power_op := phase.total_strength (ai_board.get_player_one.player_id)
 			-- Choose cards to defend
-			cards_to_defence:=cards_to_play(power_op, visible_cards_ai, phase)
+			--cards_to_defence:=cards_to_play(power_op, visible_cards_ai, phase)
 			from
 				i:=0
 			until
@@ -410,33 +410,67 @@ feature {NONE}-- Implementations
 	end
 
 
-	cards_to_play(power_op: INTEGER ; cards: ARRAYED_LIST[GT_LOGIC_CARD]; phase: GT_LOGIC_PHASE_CHALLENGES): ARRAYED_LIST[GT_LOGIC_CARD]
-
-	require
-		-- The cards of "cards" should be visible
-	local
-		play, playing_cards: ARRAYED_LIST[GT_LOGIC_CARD]
-		i, power: INTEGER
-	do
-		create playing_cards.make (0)
-
-		from
-			i := 0
-		until
-			i>= cards.count and power>=power_op
-		loop
-			if phase.is_card_playable_in_phase (cards.array_item (i).unique_id, ai_player)then
-				playing_cards.extend (cards.array_item (i))
-				-- considers only the strength of the card
-				if attached {GT_LOGIC_CARD_CHARACTER} cards.array_item (i) as current_card then
-					power := power + current_card.strength
+	cards_to_defense(challengue:STRING; power_op: INTEGER ; cards: ARRAYED_LIST[GT_LOGIC_CARD]; phase: GT_LOGIC_PHASE_CHALLENGES): ARRAYED_LIST[GT_LOGIC_CARD]
+		local
+			play, playing_cards: ARRAYED_LIST[GT_LOGIC_CARD]
+			i, power: INTEGER
+			type_correct: BOOLEAN
+			defense_card: GT_LOGIC_CARD
+		do
+			create playing_cards.make (0)
+			from
+				i := 0
+			until
+				i>= cards.count or power>=power_op
+			loop
+				if attached {GT_LOGIC_CARD_CHARACTER} cards.array_item(i) as card then
+					if challengue = {GT_CONSTANTS}.challenge_type_military then
+						type_correct := card.military
+					end
+					if challengue = {GT_CONSTANTS}.challenge_type_intrigue then
+						type_correct := card.intrigue
+					end
+					if challengue = {GT_CONSTANTS}.challenge_type_power then
+						type_correct := card.power
+					end
 				end
+				if phase.is_card_playable_in_phase (cards.array_item (i).unique_id, ai_player) and type_correct then
+					playing_cards.extend (cards.array_item (i))
+					-- considers only the strength of the card
+					if attached {GT_LOGIC_CARD_CHARACTER} cards.array_item (i) as current_card then
+						power := power + current_card.strength
+					end
+				end
+				i := i + 1
+				type_correct := False
 			end
-			i := i + 1
+			if playing_cards.count > 0 then
+				if (power >= power_op) then
+					Result := playing_cards
+				else
+					-- Play a small defense
+					defense_card := cards.array_item (0)
+					from
+						i := 1
+					until
+						i >= playing_cards.count
+					loop
+						if attached {GT_LOGIC_CARD_CHARACTER} playing_cards.array_item(i) as card then
+							if attached {GT_LOGIC_CARD_CHARACTER} defense_card as d_card then
+								if d_card.strength > card.strength then
+									defense_card := card
+								end
+							end
+						end
+						i := i + 1
+					end
+					create playing_cards.make (0)
+					playing_cards.extend (defense_card)
+					Result := playing_cards
+				end
+			else
+				Result := Void
+			end
 		end
-		if (power >= power_op) then
-			Result := playing_cards
-		end
-	end
 
 end --GT_AI_EASY
