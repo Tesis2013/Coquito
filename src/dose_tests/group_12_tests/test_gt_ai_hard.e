@@ -365,4 +365,46 @@ feature
 			i := i + 1
 		end
 	end
+
+	-- Test choose challenge in case that the users have te same cards in play
+	test_choose_challenge_p01
+	note
+		testing: "covers/{GT_AI}.make_move"
+		testing: "GT/GT_AI"
+		testing: "user/GT"
+	local
+		correct_phase: BOOLEAN
+		phase: STRING
+	do
+		from
+			correct_phase := False
+		until
+			correct_phase
+		loop
+			phase := get_current_phase.get_phase_identifer
+			if phase = {GT_CONSTANTS}.phase_plot then
+				player_human.play_plot_card (player_human.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+				player_ai.play_plot_card (player_ai.get_cards_in_plot_deck.to_arrayed_list.array_item (0).unique_id)
+			end
+			if phase /= {GT_CONSTANTS}.phase_challenges then
+				player_human.end_turn
+				player_ai.end_turn
+			else
+				correct_phase := True
+			end
+		end
+		-- Put cards in hand
+		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (5))
+		player_ai.get_cards_in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (6))
+		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (5))
+		player_human.get_cards_in_hand.add_card (player_human.get_cards_in_house_deck.get_card_by_id (6))
+		-- Put cards in play
+		player_ai.get_cards_in_play.add_card (player_ai.get_cards_in_hand.get_card_by_id (5))
+		player_ai.get_cards_in_play.add_card (player_ai.get_cards_in_hand.get_card_by_id (6))
+		player_human.get_cards_in_play.add_card (player_human.get_cards_in_hand.get_card_by_id (5))
+		player_human.get_cards_in_play.add_card (player_human.get_cards_in_hand.get_card_by_id (6))
+
+		assert("the same cards in play, No challenge?", choose_challenge = Void)
+	end
+
 end
