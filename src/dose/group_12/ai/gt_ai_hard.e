@@ -821,11 +821,11 @@ feature -- Implementation (choose_card_to_recruit)
 					j >= missing_card.count or flag
 				loop
 					if attached{GT_LOGIC_CARD_CHARACTER} cards.array_item (i) as card then
-						if missing_card.array_item (j)= "military" then
+						if missing_card.array_item (j)= {GT_CONSTANTS}.challenge_type_military then
 							flag:= card.military
-						elseif missing_card.array_item (j)= "intrigue" then
+						elseif missing_card.array_item (j)= {GT_CONSTANTS}.challenge_type_intrigue then
 							flag:= card.intrigue
-						elseif missing_card.array_item (j)= "power" then
+						elseif missing_card.array_item (j)= {GT_CONSTANTS}.challenge_type_power then
 							flag:= card.power
 						end
 					end
@@ -868,13 +868,13 @@ feature -- Implementation (choose_card_to_recruit)
 				i := i + 1
 		end -- end loop
 		if not (military) then
-			list.extend ("military")
+			list.extend ({GT_CONSTANTS}.challenge_type_military)
 		end
 		if not (power) then
-			list.extend ("power")
+			list.extend ({GT_CONSTANTS}.challenge_type_power)
 		end
 		if not (intrigue) then
-			list.extend ("intrigue")
+			list.extend ({GT_CONSTANTS}.challenge_type_intrigue)
 		end
 		Result:=list
 	end

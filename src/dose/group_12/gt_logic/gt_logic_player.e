@@ -394,7 +394,7 @@ feature -- Commands
 			card := get_cards_in_hand.get_card_by_id (card_id) --create a local reference to the card
 			card := get_cards_in_hand.remove_card_by_id (card_id) --remove the reference in the in_hand
 			get_cards_in_play.add_card(card) --add the card to the in_play
-			--gold_dragon_tokens := gold_dragon_tokens - card.cost
+			gold_dragon_tokens := gold_dragon_tokens - card.cost
 			if
 				network_component /= void
 			then

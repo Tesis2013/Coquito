@@ -229,7 +229,7 @@ feature -- Implementation
 
 			elseif option = 2 then -- choose the most expensive cards
 					from
-						card_cost := 5
+						card_cost := 7
 					until
 						card_cost < 0
 					loop
