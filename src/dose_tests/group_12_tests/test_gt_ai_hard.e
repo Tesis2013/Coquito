@@ -18,8 +18,8 @@ inherit
 
 	GT_AI_HARD
 		rename
-			default_create as gt_ai_easy_default_create,
-			make as gt_ai_easy_make
+			default_create as gt_ai_hard_default_create,
+			make as gt_ai_hard_make
 		end
 	GT_LOGIC_BOARD
 		rename
@@ -36,7 +36,6 @@ inherit
 feature {NONE}
 	player_ai : GT_LOGIC_PLAYER
 	player_human : GT_LOGIC_PLAYER
-	house_deck_stark : STRING
 
 feature
 	-- For each tests we set up the logic state, such that the AI is able to make valid moves.
@@ -55,8 +54,8 @@ feature
 			-- used on current, since we need access to private fields
 			gt_board_make(player_ai, player_human)
 
-			-- instantiate the AI implementation (easy)
-			gt_ai_easy_make (player_ai, current) -- TODO: maybe get_logic_board instead.
+			-- instantiate the AI implementation (hard)
+			gt_ai_hard_make (player_ai, current) -- TODO: may be get_logic_board instead.
 		end
 
 
@@ -99,14 +98,6 @@ feature
 			assert("in the interval" , change_initial_card.item = True or change_initial_card.item = False)
     	end
 
-	test_choose_draw_deck
-		note
-			testing: "cover/{GT_AI}.choose_draw_deck"
-			testing: "GT/GT_AI"
-			testing: "user/GT"
-		do
-		end
-
 	test_choose_plot_card
 		note
 			testing: "cover/{GT_AI}.choose_plot_card"
@@ -132,16 +123,6 @@ feature
 			assert("Plot deck size", player_ai.get_cards_in_plot_deck.size = old_size - 1)
 
 			assert("The plot deck not contain the plot card used for ai_player", not ai_player.get_cards_in_plot_deck.contain (ai_player.get_active_plot_card.unique_id))
-		end
-
-	test_choose_defense
-		note
-			testing: "cover/{GT_AI}.choose_defense"
-			testing: "GT/GT_AI"
-			testing: "user/GT"
-		do
-			-- set up the logic state
-			handler_current_phase:= phase_challenges
 		end
 
 	test_choose_cards_to_recruit
@@ -305,7 +286,6 @@ feature
 			testing: "GT/GT_AI"
 			testing: "user/GT"
 		local
-			size : INTEGER
 			correct_phase : BOOLEAN
 			phase : STRING
 		do
