@@ -81,12 +81,12 @@ feature -- Implementation
 					create tuple.default_create
 					tuple.put (card, 1)
 					tuple.put (valuation_character(card), 2)
-					insertion_sort(tuple, ordered_cards)
+					ordered_cards := insertion_sort(tuple, ordered_cards)
 				elseif attached{GT_LOGIC_CARD_LOCATION} current_card as card then
 					create tuple.default_create
 					tuple.put (card, 1)
 					tuple.put (valuation_location(card), 2)
-					insertion_sort(tuple, ordered_cards)
+					ordered_cards := insertion_sort(tuple, ordered_cards)
 				end
 				i := i + 1
 			end --end loop
@@ -218,7 +218,7 @@ feature -- Implementation
 			tuple: TUPLE[c: GT_LOGIC_CARD; v: INTEGER]
 		do
 			-- Arranges the cards according to their valuation
-			create ordered_cards.make (7)
+			create ordered_cards.make (0)
 			from
 				i := 0
 			until
@@ -229,12 +229,12 @@ feature -- Implementation
 					create tuple.default_create
 					tuple.put (card, 1)
 					tuple.put (valuation_character(card), 2)
-					insertion_sort(tuple, ordered_cards)
+					ordered_cards := insertion_sort(tuple, ordered_cards)
 				elseif attached{GT_LOGIC_CARD_LOCATION} current_card as card then
 					create tuple.default_create
 					tuple.put (card, 1)
 					tuple.put (valuation_location(card), 2)
-					insertion_sort(tuple, ordered_cards)
+					ordered_cards := insertion_sort(tuple, ordered_cards)
 				end
 				i := i + 1
 			end
@@ -243,7 +243,7 @@ feature -- Implementation
 
 			-- select the cards to play
 			from
-				i := ordered_cards.count - 1
+				i := (ordered_cards.count - 1)
 			until
 				0 > i
 			loop
@@ -254,7 +254,7 @@ feature -- Implementation
 					ai_player.play (current_card.unique_id)
 					no_character := no_character + 1
 				end
-				i := i + 1
+				i := i - 1
 			end
 
 		end
@@ -882,32 +882,36 @@ feature -- Implementation (choose_card_to_recruit)
 
 feature -- Implementation (choose_initial_card)
 
-	insertion_sort (tuple: TUPLE[c: GT_LOGIC_CARD; v: INTEGER] ; array : ARRAYED_LIST[TUPLE[c: GT_LOGIC_CARD; v: INTEGER]])
+	insertion_sort (tuple: TUPLE[c: GT_LOGIC_CARD; v: INTEGER] ; array : ARRAYED_LIST[TUPLE[c: GT_LOGIC_CARD; v: INTEGER]]): ARRAYED_LIST[TUPLE[c: GT_LOGIC_CARD; v: INTEGER]]
 			-- Card inserted in the orderly arrangement according to the value
 		local
 			i: INTEGER
 			current_value, old_value: TUPLE[c: GT_LOGIC_CARD; v: INTEGER]
 			done: BOOLEAN
+			aux: ARRAYED_LIST[TUPLE[c: GT_LOGIC_CARD; v: INTEGER]]
 		do
-			if array.count > 0 then
+			create aux.make (0)
+			aux.deep_copy(array)
+			if aux.count > 0 then
 				from
 					i := 0
 					old_value := tuple
 				until
-					not (array.count > i)
+					aux.count <= i
 				loop
-					if array.array_item (i).v < old_value.v  then
-						current_value := array.array_item (i)
-						array.array_put (old_value, i)
+					if aux.array_item (i).v < old_value.v  then
+						current_value := aux.array_item (i)
+						aux.array_put (old_value, i)
 						old_value := current_value
 					end
 
 					i := i + 1
 				end
-				array.array_put (old_value, i)
+				aux.extend (old_value)
 			else
-				array.put (tuple)
+				aux.extend (tuple)
 			end
+			Result := aux
 		end
 
 	valuation_character(card: GT_LOGIC_CARD_CHARACTER) : INTEGER

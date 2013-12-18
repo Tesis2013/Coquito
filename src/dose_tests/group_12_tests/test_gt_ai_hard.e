@@ -581,4 +581,22 @@ feature
 			res := permutation (cards)
 			assert("Correct Size. Cards with size four", res.count = 15)
 		end
+
+	test_choose_cards_initial
+
+		do
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (25))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (26))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (27))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (28))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (29))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (30))
+
+			player_ai.gold_dragon_tokens := 5
+
+			choose_initial_cards
+
+			assert("Player_ai playing the card with id 16 because is the best", player_ai.get_cards_in_play.contain (16))
+		end
 end
