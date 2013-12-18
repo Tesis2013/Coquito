@@ -577,7 +577,11 @@ feature
 			end
 		end
 
-	test_choose_cards_initial
+	test_choose_initial_cards
+		note
+			testing: "covers/{GT_AI}.choose_initial_cards"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
 		do
 			player_ai.get_cards_in_play.make
 			player_ai.get_cards_in_hand.make
@@ -593,7 +597,7 @@ feature
 			-- Add gold to player_ai
 			player_ai.gold_dragon_tokens := 5
 
-			choose_initial_cards
+			choose_initial_cards  -- call to method
 
 			assert("Player_ai playing cards", player_ai.get_cards_in_play.size > 0)
 		end
