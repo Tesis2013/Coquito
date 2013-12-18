@@ -576,4 +576,24 @@ feature
 				-- Elije una defensa con card 5 y 20
 			end
 		end
+
+	test_choose_cards_initial
+
+		do
+			-- Add cards in hand
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (25))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (26))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (27))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (28))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (29))
+			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (30))
+
+			-- Add gold to player_ai
+			player_ai.gold_dragon_tokens := 5
+
+			choose_initial_cards
+
+			assert("Player_ai playing cards", player_ai.get_cards_in_play.size > 0)
+		end
 end

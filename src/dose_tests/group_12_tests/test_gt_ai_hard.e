@@ -585,6 +585,7 @@ feature
 	test_choose_cards_initial
 
 		do
+			-- Add cards in hand
 			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16))
 			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (25))
 			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (26))
@@ -593,6 +594,7 @@ feature
 			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (29))
 			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (30))
 
+			-- Add gold to player_ai
 			player_ai.gold_dragon_tokens := 5
 
 			choose_initial_cards
