@@ -582,8 +582,11 @@ feature
 			assert("Correct Size. Cards with size four", res.count = 15)
 		end
 
-	test_choose_cards_initial
-
+	test_choose_initial_cards
+		note
+			testing: "cover/{GT_AI}.choose_initial_cards"
+			testing: "GT/GT_AI"
+			testing: "user/GT"
 		do
 			-- Add cards in hand
 			player_ai.in_hand.add_card (player_ai.get_cards_in_house_deck.get_card_by_id (16))
@@ -597,7 +600,7 @@ feature
 			-- Add gold to player_ai
 			player_ai.gold_dragon_tokens := 5
 
-			choose_initial_cards
+			choose_initial_cards  -- call to method
 
 			assert("Player_ai playing the card with id 16 because is the best", player_ai.get_cards_in_play.contain (16))
 		end
